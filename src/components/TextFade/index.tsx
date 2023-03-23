@@ -1,16 +1,16 @@
-import { FC } from "react";
+import type { FC, ReactNode } from "react";
 import './style.css'
 
 type TextFadeProps = {
-    text: string
+    children: ReactNode
 }
 
-const TextFade: FC<TextFadeProps> = ({text}) => {
+const TextFade: FC<TextFadeProps> = ({children}) => {
     return (
     <div className="container">
         <div className="spacer"></div>
         <div className="text">
-            {text}
+            {children}
         </div>
         <div className="spacer"></div>
     </div>
