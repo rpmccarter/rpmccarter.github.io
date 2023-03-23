@@ -23,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "create-component": "ts-node --esm ./scripts/createComponent.mts"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +45,10 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^5.0.0"
+    "@types/minimist": "^1.2.2",
+    "gh-pages": "^5.0.0",
+    "minimist": "^1.2.8",
+    "template-file": "^6.0.1",
+    "ts-node": "^10.9.1"
   }
 }
