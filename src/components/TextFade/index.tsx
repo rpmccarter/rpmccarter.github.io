@@ -1,11 +1,11 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import './style.css'
 
 type TextFadeProps = {
     text: string
 }
 
-const TextFade: FunctionComponent<TextFadeProps> = ({text}) => {
+const TextFade: FC<TextFadeProps> = ({text}) => {
     return (
     <div className="container">
         <div className="spacer"></div>

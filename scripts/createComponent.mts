@@ -10,13 +10,13 @@ if (args._.length !== 1) {
 }
 const componentName = args._[0]
 
-const tsxTemplate = `import { FunctionComponent } from "react"
+const tsxTemplate = `import { FC } from "react"
 
 type {{name}}Props = {
 
 }
 
-const {{name}}: FunctionComponent<{{name}}Props> = () => {
+const {{name}}: FC<{{name}}Props> = () => {
     return (
         <></>
     )

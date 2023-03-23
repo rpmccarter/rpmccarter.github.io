@@ -1,11 +1,11 @@
-import { FunctionComponent } from "react"
+import { FC } from "react"
 import type { Position } from "../../data/resumeData"
 
 type PositionSectionProps = {
     position: Position
 }
 
-const PositionSection: FunctionComponent<PositionSectionProps> = ({ position }) => {
+const PositionSection: FC<PositionSectionProps> = ({ position }) => {
     return (
         <>
             <p>{position.company}</p>
