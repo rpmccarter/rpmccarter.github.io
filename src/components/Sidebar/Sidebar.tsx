@@ -1,5 +1,5 @@
 import { FC } from "react"
-import styles from './index.module.css'
+import styles from './Sidebar.module.css'
 import linkedin from '../../images/linkedin.png'
 import SidebarIcon from "../SidebarIcon"
 

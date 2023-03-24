@@ -1,5 +1,5 @@
 import { FC } from "react"
-import styles from './index.module.css'
+import styles from './PositionSection.module.css'
 import type { Position } from "../../data/resumeData"
 
 type PositionSectionProps = {

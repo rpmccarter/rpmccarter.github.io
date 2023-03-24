@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import styles from './index.module.css'
+import styles from './TextFade.module.css'
 
 type TextFadeProps = {
     children: ReactNode
