@@ -11,7 +11,7 @@
     flex-direction: column;
 }
 
-.text {
+.content {
     padding: var(--fade-length, 40px) 0px;
     font-size: 20px
 }

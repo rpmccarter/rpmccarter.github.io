@@ -8,11 +8,9 @@ type TextFadeProps = {
 const TextFade: FC<TextFadeProps> = ({children}) => {
     return (
     <div className="container">
-        <div className="spacer"></div>
-        <div className="text">
+        <div className="content">
             {children}
         </div>
-        <div className="spacer"></div>
     </div>
     );
 }
