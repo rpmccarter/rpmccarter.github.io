@@ -1,0 +1,14 @@
+import { FC } from 'react'
+import styles from './{{name}}.module.css'
+
+type {{name}}Props = {
+
+}
+
+const {{name}}: FC<{{name}}Props> = () => {
+    return (
+        <></>
+    )
+}
+
+export default {{name}}

@@ -10,22 +10,10 @@ if (args._.length !== 1) {
 }
 const componentName = args._[0]
 
-const tsxTemplate = `import { FC } from "react"
-
-type {{name}}Props = {
-
-}
-
-const {{name}}: FC<{{name}}Props> = () => {
-    return (
-        <></>
-    )
-}
-
-export default {{name}}`
-
-const tsxFileContents = tf.render(tsxTemplate, {name: componentName})
+const indexFileContents = await tf.renderFile('scripts/templates/indexTemplate.txt', {name: componentName})
+const tsxFileContents = await tf.renderFile('scripts/templates/tsxTemplate.txt', {name: componentName})
 
 await mkdir(`./src/components/${componentName}`)
-await writeFile(`./src/components/${componentName}/index.tsx`, tsxFileContents)
-await writeFile(`./src/components/${componentName}/index.module.css`, '')
+await writeFile(`./src/components/${componentName}/index.tsx`, indexFileContents)
+await writeFile(`./src/components/${componentName}/${componentName}.tsx`, tsxFileContents)
+await writeFile(`./src/components/${componentName}/${componentName}.module.css`, '')
