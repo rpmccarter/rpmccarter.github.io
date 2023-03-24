@@ -1,9 +1,9 @@
-import './App.css';
+import styles from './App.module.css';
 import Resume from './components/Resume';
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.App}>
       <Resume />
     </div>
   );

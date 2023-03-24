@@ -2,7 +2,7 @@
 body {
   min-height: 100vh;
   background-color: black;
-  background-image: linear-gradient(rgb(95, 0, 95), black);
+  background-image: radial-gradient(circle at top left, rgb(95, 0, 95), black );
   background-attachment: fixed;
   color: white;
   display: flex;
@@ -11,4 +11,6 @@ body {
 
 .App {
   height: 100vh;
+  display: flex;
+  flex-direction: row;
 }

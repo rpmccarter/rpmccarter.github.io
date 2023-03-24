@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from "react";
-import './style.css'
+import styles from './index.module.css'
 
 type TextFadeProps = {
     children: ReactNode
@@ -7,8 +7,8 @@ type TextFadeProps = {
 
 const TextFade: FC<TextFadeProps> = ({children}) => {
     return (
-    <div className="container">
-        <div className="content">
+    <div className={styles.container}>
+        <div className={styles.content}>
             {children}
         </div>
     </div>

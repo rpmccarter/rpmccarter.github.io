@@ -28,4 +28,4 @@ const tsxFileContents = tf.render(tsxTemplate, {name: componentName})
 
 await mkdir(`./src/components/${componentName}`)
 await writeFile(`./src/components/${componentName}/index.tsx`, tsxFileContents)
-await writeFile(`./src/components/${componentName}/style.css`, '')
+await writeFile(`./src/components/${componentName}/index.module.css`, '')
