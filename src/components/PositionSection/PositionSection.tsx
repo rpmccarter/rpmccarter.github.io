@@ -9,9 +9,13 @@ type PositionSectionProps = {
 const PositionSection: FC<PositionSectionProps> = ({ position }) => {
     return (
         <div className={styles.position}>
-            <p>{position.company}</p>
-            <p>{position.title}</p>
-            {position.bullets.map((bullet) => (<p>{bullet}</p>))}
+            <div className={styles.header} >
+                <p className={styles.company}>{position.company}</p>
+                <p className={styles.title}>({position.title})</p>
+            </div>
+            <div className={styles.bulletContainer}>
+                {position.bullets.map((bullet) => (<p className={styles.bullet}>{bullet}</p>))}
+            </div>
         </div>
     )
 }

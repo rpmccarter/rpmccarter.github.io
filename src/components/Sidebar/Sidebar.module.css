@@ -9,3 +9,7 @@
     border-width: 0px 2px 0px 0px;
     border-style: solid;
 }
+
+.separator {
+    flex: 1
+}
