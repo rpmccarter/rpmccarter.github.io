@@ -3,12 +3,22 @@
 }
 
 .image {
-    max-width: 100%;
-    max-height: 100%;
     object-fit: contain;
     aspect-ratio: 1;
 }
 
-.container:nth-child(1) {
+.upperImage {
+    max-width: 50px;
+}
+
+.lowerImage {
+    max-width: 40px;
+}
+
+.upperContainer:first-child {
     padding-top: 12px;
+}
+
+.lowerContainer:last-child {
+    padding-bottom: 12px;
 }

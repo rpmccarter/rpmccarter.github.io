@@ -1,4 +1,6 @@
 body {
+  --purple: rgb(127, 0, 127);
+  --dark-purple: rgb(95, 0, 95);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

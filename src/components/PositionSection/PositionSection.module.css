@@ -3,7 +3,7 @@
     padding-top: 12px;
 }
 
-.position:nth-child(1) {
+.position:first-child {
     padding-top: 0px;
 }
 

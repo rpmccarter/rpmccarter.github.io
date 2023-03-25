@@ -1,14 +1,23 @@
-.sidebar {
-    width: 60px;
+.sidebarContainer {
     height: 100vh;
-    background-color: black;
     display: flex;
     flex-direction: column;
-    border-color: purple;
-    border-width: 0px 2px 0px 0px;
+    justify-content: space-between;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    border-width: 0px 10px 0px 0px;
     border-style: solid;
 }
 
-.separator {
-    flex: 1
+.upperSidebar {
+    padding: 0px 5px 10px;
+    border-color: black;
+}
+
+.lowerSidebar {
+    padding: 10px 5px 0px;
+    border-color: var(--purple);
 }
