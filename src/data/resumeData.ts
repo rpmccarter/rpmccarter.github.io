@@ -42,9 +42,9 @@ const technologies = [
 ] as const
 
 export const technologyColors: {[key in typeof technologies[number]]: string} = {
-    Jest: '#c21325', // red
+    Jest: 'rgb(169 0 0)', // red
+    Swift: 'rgb(255 52 0)', // red-orange
     AWS: '#f90', // orange
-    Swift: '#ff3527', // red-orange
     Python: '#ffd343', // yellow
     Sequelize: 'green', // green
     React: 'aqua', // aqua
