@@ -1,10 +1,15 @@
 .position {
     font-family: courier;
+    padding-top: 12px;
+}
+
+.position:nth-child(1) {
+    padding-top: 0px;
 }
 
 .header {
     display: flex;
-    align-items: baseline;
+    align-items: last baseline;
 }
 
 .company {
@@ -14,6 +19,7 @@
 .title {
     font-size: 14px;
     padding-left: 12px;
+    flex-shrink: 0;
 }
 
 .bulletContainer {
