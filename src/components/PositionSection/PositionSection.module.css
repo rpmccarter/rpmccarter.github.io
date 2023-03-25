@@ -8,8 +8,7 @@
 }
 
 .header {
-    display: flex;
-    align-items: last baseline;
+    margin-bottom: 4px;
 }
 
 .company {
@@ -20,6 +19,14 @@
     font-size: 14px;
     padding-left: 12px;
     flex-shrink: 0;
+}
+
+.dotContainer {
+    display: flex;
+}
+
+.dot {
+    padding-right: 4px;
 }
 
 .bulletContainer {

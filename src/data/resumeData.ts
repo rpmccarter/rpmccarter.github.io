@@ -5,7 +5,7 @@ export type Position = {
     start: PositionDate
     end?: PositionDate
     bullets: string[]
-    technologies?: string[]
+    technologies?: typeof technologies[number][]
 }
 
 const months = [
@@ -27,6 +27,32 @@ type PositionDate = {
     month: typeof months[number]
     year: string
 }
+
+const technologies = [
+    'TypeScript',
+    'React',
+    'Redux',
+    'SQL',
+    'Sequelize',
+    'Jest',
+    'Express',
+    'AWS',
+    'Python',
+    'Swift',
+] as const
+
+export const technologyColors: {[key in typeof technologies[number]]: string} = {
+    Jest: '#c21325', // red
+    AWS: '#f90', // orange
+    Swift: '#ff3527', // red-orange
+    Python: '#ffd343', // yellow
+    Sequelize: 'green', // green
+    React: 'aqua', // aqua
+    TypeScript: '#3178c6', // blue
+    Redux: '#764abc', // purple
+    SQL: 'white', // white
+    Express: 'gray', // gray
+} as const
 
 export const positions: Position[] = [
     {
@@ -52,7 +78,8 @@ export const positions: Position[] = [
             'React',
             'Redux',
             'SQL',
-            'Sequelize',
+            'Jest',
+            'Express',
         ],
     },
     {
@@ -74,7 +101,7 @@ export const positions: Position[] = [
         ],
         technologies: [
             'TypeScript',
-            'AWS CDK',
+            'AWS',
             'Jest',
         ]
     },
@@ -97,8 +124,7 @@ export const positions: Position[] = [
         technologies: [
             'Swift',
             'Python',
-            'Django REST',
-            'Heroku',
+            'Express',
         ]
     },
     {
@@ -119,9 +145,7 @@ export const positions: Position[] = [
             'parallelized independent subsampling tasks and automated algorithm-specific workflows', 
         ],
         technologies: [
-            'TypeScript',
-            'AWS CDK',
-            'Jest',
+            'Python',
         ]
     },
     {
