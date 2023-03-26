@@ -87,8 +87,8 @@ export const positions: Position[] = [
             'optimized performance for long-term high-volume storage and bursts of computation-intensive traffic', 
         ],
         technologies: [
-            'TypeScript',
             'AWS',
+            'TypeScript',
             'Jest',
         ]
     },
