@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import ColorKey from './components/ColorKey';
+import TechIconKey from './components/TechIconKey';
 import Resume from './components/Resume';
 import Sidebar from './components/Sidebar';
 
@@ -8,7 +8,7 @@ function App() {
     <div className={styles.App}>
       <Sidebar />
       <Resume />
-      <ColorKey />
+      <TechIconKey />
     </div>
   );
 }

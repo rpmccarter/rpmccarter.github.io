@@ -1,7 +1,7 @@
 import { FC } from "react"
 import styles from './PositionSection.module.css'
-import { Position, technologyColors } from "../../data/resumeData"
-import ColorCircle from "../ColorCircle"
+import { Position } from "../../data/resumeData"
+import TechIconCircle from "../TechIconCircle"
 
 type PositionSectionProps = {
     position: Position
@@ -12,11 +12,9 @@ const PositionSection: FC<PositionSectionProps> = ({ position }) => {
     
     const techDots = position.technologies 
         ?   (<div className={styles.dotContainer}>
-                {position.technologies.map((tech) => <div className={styles.dot}><ColorCircle color={technologyColors[tech]} /></div>)}
+                {position.technologies.map((tech) => <div className={styles.dot}><TechIconCircle name={tech} /></div>)}
             </div>) 
         : null
-
-    console.log(techDots)
 
     return (
         <div className={styles.position}>

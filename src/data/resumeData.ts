@@ -28,31 +28,18 @@ type PositionDate = {
     year: string
 }
 
-const technologies = [
+export const technologies = [
     'TypeScript',
+    'Sequelize',
+    'Express',
+    'Python',
     'React',
     'Redux',
-    'SQL',
-    'Sequelize',
-    'Jest',
-    'Express',
-    'AWS',
-    'Python',
     'Swift',
+    'Jest',
+    'SQL',
+    'AWS',
 ] as const
-
-export const technologyColors: {[key in typeof technologies[number]]: string} = {
-    Jest: 'rgb(169 0 0)', // red
-    Swift: 'rgb(255 52 0)', // red-orange
-    AWS: '#f90', // orange
-    Python: '#ffd343', // yellow
-    Sequelize: 'green', // green
-    React: 'aqua', // aqua
-    TypeScript: '#3178c6', // blue
-    Redux: '#764abc', // purple
-    SQL: 'white', // white
-    Express: 'gray', // gray
-} as const
 
 export const positions: Position[] = [
     {
@@ -74,8 +61,8 @@ export const positions: Position[] = [
             'developed user-facing sample Retool apps leveraged by go-to-market team in product launches',
         ],
         technologies: [
-            'TypeScript',
             'React',
+            'TypeScript',
             'Redux',
             'SQL',
             'Jest',
