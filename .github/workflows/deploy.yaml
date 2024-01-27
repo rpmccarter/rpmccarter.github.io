@@ -13,7 +13,7 @@ jobs:
         with:
           bun-version: latest
       - name: Install modules
-        run: bun install -p
+        run: bun install --frozen-lockfile
       - name: Build next app
         run: bun run build
       - name: Deploy to github pages
