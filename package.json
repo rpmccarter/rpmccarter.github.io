@@ -4,9 +4,9 @@
   "homepage": "https://rpmccarter.github.io",
   "private": true,
   "scripts": {
-    "deploy": "gh-pages -d out",
+    "deploy": "gh-pages -d out -t",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && touch out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier . --write"
