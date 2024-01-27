@@ -13,8 +13,11 @@ export default function Terminal() {
 
   useEffect(() => {
     setTimeout(() => {
-      pushLine('Welcome to rush');
+      pushLine('rmsh v0.0.1');
     }, 300);
+    setTimeout(() => {
+      pushLine('much more coming soon...');
+    }, 600);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
