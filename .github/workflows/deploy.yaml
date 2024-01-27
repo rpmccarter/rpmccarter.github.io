@@ -16,5 +16,9 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Build next app
         run: bun run build
+      - name: Setup git info
+        run: |
+          git config --global user.email 'rpmccarter@gmail.com'
+          git config --global user.name 'Ronan McCarter'
       - name: Deploy to github pages
         run: bun run deploy
