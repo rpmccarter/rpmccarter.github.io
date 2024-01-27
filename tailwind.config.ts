@@ -10,12 +10,12 @@ const config: Config = {
     extend: {
       keyframes: {
         blink: {
-          '0%, 100%': { backgroundColor: 'none' },
-          '50%': { backgroundColor: 'white' },
+          '0%, 100%': { backgroundColor: 'white' },
+          '50%': { backgroundColor: 'transparent' },
         },
       },
       animation: {
-        blink: 'blink 0.8s step-end infinite',
+        blink: 'blink 1s step-end infinite',
       },
     },
   },
