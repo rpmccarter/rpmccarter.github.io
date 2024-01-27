@@ -6,13 +6,12 @@ export const useKeyInputs = (
 ) => {
   const onKeypress = useCallback(
     (event: KeyboardEvent) => {
-      if (
-        (typeof key === 'string' && event.key === key) ||
-        key.includes(event.key)
-      ) {
-        event.preventDefault();
-        void callback?.(event.key);
-      }
+      const isMatch =
+        typeof key === 'string' ? event.key === key : key.includes(event.key);
+      if (!isMatch) return;
+
+      event.preventDefault();
+      void callback?.(event.key);
     },
     [callback, key]
   );

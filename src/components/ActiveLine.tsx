@@ -9,7 +9,7 @@ export const ActiveLine = () => {
   const [index, setIndex] = useState(0);
 
   useCharInputs((char) => {
-    setText((prev) => prev + char);
+    setText((prev) => prev.substring(0, index) + char + prev.substring(index));
     setIndex((prev) => prev + 1);
   });
 
@@ -31,7 +31,7 @@ export const ActiveLine = () => {
   const postText = text.substring(index + 1);
 
   return (
-    <div className="whitespace-pre">
+    <div className="whitespace-pre max-w-full text-wrap break-all">
       <Prompt />
       {preText}
       <Cursor char={char} key={index} />

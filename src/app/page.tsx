@@ -19,7 +19,7 @@ export default function Terminal() {
   }, []);
 
   return (
-    <main className="min-h-screen text-lime-500 font-mono">
+    <main className="min-h-screen w-screen overflow-hidden text-lime-500 font-mono">
       {lines.map((line, i) => (
         <InactiveLine key={i} text={line} />
       ))}
