@@ -8,10 +8,14 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      keyframes: {
+        blink: {
+          '0%, 100%': { backgroundColor: 'none' },
+          '50%': { backgroundColor: 'white' },
+        },
+      },
+      animation: {
+        blink: 'blink 0.8s step-end infinite',
       },
     },
   },
