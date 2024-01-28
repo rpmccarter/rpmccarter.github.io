@@ -1,16 +1,28 @@
 import { useState } from 'react';
 import { Cursor } from './Cursor';
-import { Prompt } from './Prompt';
 import { useCharInputs } from '@/hooks/useCharInputs';
 import { useKeyInputs } from '@/hooks/useKeyInput';
+import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
 
-export const ActiveLine = () => {
+type ActiveLineProps = {
+  submitLine: (line: string) => void;
+  prompt: string;
+};
+
+export const ActiveLine = ({ submitLine, prompt }: ActiveLineProps) => {
   const [text, setText] = useState('');
   const [index, setIndex] = useState(0);
 
   useCharInputs((char) => {
     setText((prev) => prev.substring(0, index) + char + prev.substring(index));
     setIndex((prev) => prev + 1);
+  });
+
+  useKeyboardShortcut('a', 'ctrlKey', () => setIndex(0));
+  useKeyboardShortcut('e', 'ctrlKey', () => setIndex(text.length));
+
+  useKeyInputs('Enter', () => {
+    submitLine(text);
   });
 
   useKeyInputs('Backspace', () => {
@@ -32,7 +44,7 @@ export const ActiveLine = () => {
 
   return (
     <div className="whitespace-pre max-w-full text-wrap break-all">
-      <Prompt />
+      {prompt}
       {preText}
       <Cursor char={char} key={index} />
       {postText}

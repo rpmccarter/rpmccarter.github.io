@@ -3,5 +3,5 @@ type InactiveLineParams = {
 };
 
 export const InactiveLine = ({ text }: InactiveLineParams) => {
-  return <div>{text}</div>;
+  return <div className="whitespace-pre break-all">{text}</div>;
 };
