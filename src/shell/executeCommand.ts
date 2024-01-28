@@ -1,13 +1,19 @@
+import { Trie } from '@/dataStructures/Trie';
 import { echo } from './echo';
 
-export type CmdExecutor = (
-  argv: string[],
-  log: (str: string) => void
-) => number;
+export type Executor = (argv: string[], log: (str: string) => void) => number;
+export type Autocompleter = (argv: string[]) => string | undefined;
 
-const cmdNameToExecutor: Record<string, CmdExecutor> = {
+export type Command = {
+  executor: Executor;
+  autocompleter?: Autocompleter;
+};
+
+const cmdNameToExecutor: Record<string, Command> = {
   echo,
 };
+
+const cmdTrie = new Trie(Object.keys(cmdNameToExecutor));
 
 export const executeCommand = async (
   cmd: string,
@@ -19,5 +25,9 @@ export const executeCommand = async (
     return 127;
   }
 
-  return cmdNameToExecutor[cmd](argv, log);
+  return cmdNameToExecutor[cmd].executor(argv, log);
 };
+
+export const autocompleteCommand = (
+  partialCmd: string
+): string | undefined => {};

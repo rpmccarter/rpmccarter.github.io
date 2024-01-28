@@ -39,7 +39,9 @@ export const ActiveLine = ({ submitLine, prompt }: ActiveLineProps) => {
   });
 
   const preText = text.substring(0, index);
-  const char = text.at(index);
+  const codePoint = text.codePointAt(index);
+  const char =
+    codePoint !== undefined ? String.fromCodePoint(codePoint) : undefined;
   const postText = text.substring(index + 1);
 
   return (
