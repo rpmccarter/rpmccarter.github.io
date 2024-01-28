@@ -8,7 +8,7 @@
     "dev": "next dev",
     "build": "next build && touch out/.nojekyll",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --max-warnings 0",
     "clean": "rimraf out",
     "format": "prettier . --write",
     "format:check": "prettier . --check"

@@ -19,7 +19,7 @@ export const useKeyboardShortcut = (
         void callback?.();
       }
     },
-    [callback, key]
+    [callback, key, modifier]
   );
 
   useEffect(() => {
