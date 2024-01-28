@@ -18,14 +18,35 @@ export const ActiveLine = ({
 }: ActiveLineProps) => {
   const [text, setText] = useState('');
   const [index, setIndex] = useState(0);
+  const [buffer, setBuffer] = useState('');
 
   useCharInputs((char) => {
     setText((prev) => prev.substring(0, index) + char + prev.substring(index));
     setIndex((prev) => prev + 1);
   });
 
+  // cursor movement
   useKeyboardShortcut('a', 'ctrlKey', () => setIndex(0));
   useKeyboardShortcut('e', 'ctrlKey', () => setIndex(text.length));
+
+  // delete
+  useKeyboardShortcut('Backspace', 'metaKey', () => {
+    setText('');
+    setIndex(0);
+  });
+
+  // cut
+  useKeyboardShortcut('u', 'ctrlKey', () => {
+    setBuffer(text);
+    setText('');
+    setIndex(0);
+  });
+
+  // paste
+  useKeyboardShortcut('y', 'ctrlKey', () => {
+    setText(text.slice(0, index) + buffer + text.slice(index));
+    setIndex((prev) => prev + buffer.length);
+  });
 
   useKeyInputs('Enter', () => {
     submitLine(text);
