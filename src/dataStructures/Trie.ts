@@ -71,15 +71,15 @@ export class Trie {
     return {
       matchType: 'many',
       prefix,
-      matches: this.getWords(curr, prefix),
+      matches: Trie.getWords(curr, prefix),
     };
   }
 
   public allWords(): string[] {
-    return this.getWords(this.data);
+    return Trie.getWords(this.data);
   }
 
-  private getWords(trie: TrieData, prefix: string = ''): string[] {
+  private static getWords(trie: TrieData, prefix: string = ''): string[] {
     const words = Object.entries(trie.rest).flatMap(([char, subtrie]) =>
       this.getWords(subtrie, prefix + char)
     );
