@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Cursor } from './Cursor';
 import { useCharInputs } from '@/hooks/useCharInputs';
 import { useKeyInputs } from '@/hooks/useKeyInput';
+import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
 
 type ActiveLineProps = {
   submitLine: (line: string) => void;
@@ -16,6 +17,9 @@ export const ActiveLine = ({ submitLine, prompt }: ActiveLineProps) => {
     setText((prev) => prev.substring(0, index) + char + prev.substring(index));
     setIndex((prev) => prev + 1);
   });
+
+  useKeyboardShortcut('a', 'ctrlKey', () => setIndex(0));
+  useKeyboardShortcut('e', 'ctrlKey', () => setIndex(text.length));
 
   useKeyInputs('Enter', () => {
     submitLine(text);
