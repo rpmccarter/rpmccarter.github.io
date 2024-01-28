@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { ActiveLine } from './ActiveLine';
 import { split } from 'shellwords-ts';
-import { executeCommand } from '@/shell/executeCommand';
+import { executeCommand, autocompleteLine } from '@/shell/executeCommand';
+import { AutocompleteOptions } from './AutocompleteOptions';
 
 type ActiveCommandProps = {
   writeLine: (command: string) => void;
@@ -15,6 +16,7 @@ export const ActiveCommand = ({
   onExecutionEnd,
 }: ActiveCommandProps) => {
   const prompt = '> ';
+  const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
 
   const submitLine = useCallback(
     async (line: string) => {
@@ -31,6 +33,19 @@ export const ActiveCommand = ({
     },
     [onExecutionEnd, onExecutionStart, writeLine]
   );
+
+  const autocomplete = useCallback((line: string) => {
+    const { replaced, result } = autocompleteLine(line);
+    switch (result.matchType) {
+      case 'none':
+        return line;
+      case 'one':
+        return replaceEnd(line, replaced, result.match) + ' ';
+      case 'many':
+        setAutocompleteOptions(result.matches);
+        return replaceEnd(line, replaced, result.prefix);
+    }
+  }, []);
 
   // TODO: handle multiline inputs
   // const [lines, setLines] = useState<string[]>([]);
@@ -57,7 +72,19 @@ export const ActiveCommand = ({
       {/* {lines.map((line, i) => (
         <InactiveLine key={i} text={line} />
       ))} */}
-      <ActiveLine prompt={prompt} submitLine={submitLine} />
+      <ActiveLine
+        prompt={prompt}
+        submitLine={submitLine}
+        autocomplete={autocomplete}
+      />
+      {autocompleteOptions.length > 0 && (
+        <AutocompleteOptions options={autocompleteOptions} />
+      )}
     </>
   );
+};
+
+const replaceEnd = (str: string, before: string, after: string): string => {
+  const lastIndex = str.lastIndexOf(before);
+  return str.slice(0, lastIndex) + after;
 };

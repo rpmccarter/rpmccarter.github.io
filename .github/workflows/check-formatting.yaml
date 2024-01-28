@@ -1,0 +1,16 @@
+name: 'Check Formatting'
+
+on: push
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Install modules
+        run: bun install
+      - name: Check formatting
+        run: bun format:check
