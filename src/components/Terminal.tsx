@@ -2,6 +2,7 @@
 
 import { ActiveCommand } from '@/components/ActiveCommand';
 import { InactiveLine } from '@/components/InactiveLine';
+import { EnvContext } from '@/context/EnvContext';
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -29,18 +30,20 @@ export const Terminal = () => {
   }, []);
 
   return (
-    <main className="min-h-screen w-screen overflow-hidden text-lime-500 font-mono">
-      {lines.map((line, i) => (
-        <InactiveLine key={i} text={line} />
-      ))}
-      {!active && (
-        <ActiveCommand
-          key={lines.length}
-          writeLine={writeLine}
-          onExecutionStart={() => setActive(true)}
-          onExecutionEnd={() => setActive(false)}
-        />
-      )}
-    </main>
+    <EnvContext.Provider value={{ PWD: '/' }}>
+      <div className="min-h-screen w-screen overflow-hidden text-lime-500 font-mono">
+        {lines.map((line, i) => (
+          <InactiveLine key={i} text={line} />
+        ))}
+        {!active && (
+          <ActiveCommand
+            key={lines.length}
+            writeLine={writeLine}
+            onExecutionStart={() => setActive(true)}
+            onExecutionEnd={() => setActive(false)}
+          />
+        )}
+      </div>
+    </EnvContext.Provider>
   );
 };
