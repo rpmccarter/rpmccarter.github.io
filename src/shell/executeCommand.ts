@@ -1,8 +1,12 @@
 import { AutocompleteResult, Trie } from '@/dataStructures/Trie';
 import { echo } from './echo';
+import { split } from 'shellwords-ts';
 
 export type Executor = (argv: string[], log: (str: string) => void) => number;
-export type Autocompleter = (argv: string[]) => AutocompleteResult;
+export type Autocompleter = (
+  argv: string[],
+  prefix: string
+) => AutocompleteResult;
 
 export type Command = {
   executor: Executor;
@@ -28,18 +32,42 @@ export const executeCommand = async (
   return cmdNameToCmd[cmd].executor(argv, log);
 };
 
-export const autocompleteArgs = (
+const autocompleteArgs = (
   cmd: string,
-  argv: string[]
+  argv: string[],
+  prefix: string
 ): AutocompleteResult => {
   if (!cmdNameToCmd.hasOwnProperty(cmd)) return { matchType: 'none' };
 
   const autocompleter = cmdNameToCmd[cmd].autocompleter;
   if (!autocompleter) return { matchType: 'none' };
 
-  return autocompleter(argv);
+  return autocompleter(argv, prefix);
 };
 
-export const autocompleteCommand = (partialCmd: string) => {
-  return cmdTrie.autocomplete(partialCmd);
+const autocompleteCommand = (partialCmd: string) =>
+  cmdTrie.autocomplete(partialCmd);
+
+export const autocompleteLine = (
+  line: string
+): { replaced: string; result: AutocompleteResult } => {
+  const words = split(line);
+  const cmd = words[0] ?? '';
+
+  // if the command is the whole line, attempt to autocomplete the command
+  if (cmd === line) {
+    return { replaced: cmd, result: autocompleteCommand(cmd) };
+  }
+
+  const argv = words.slice(1);
+  const lastArg = argv[argv.length - 1];
+
+  // if lastArg is still being written, attempt to complete it
+  if (lastArg !== undefined && line.endsWith(lastArg)) {
+    argv.pop();
+    return { replaced: lastArg, result: autocompleteArgs(cmd, argv, lastArg) };
+  }
+
+  // lastArg is already written - autocomplete empty string
+  return { replaced: '', result: autocompleteArgs(cmd, argv, '') };
 };

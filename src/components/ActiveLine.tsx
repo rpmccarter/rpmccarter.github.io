@@ -3,13 +3,19 @@ import { Cursor } from './Cursor';
 import { useCharInputs } from '@/hooks/useCharInputs';
 import { useKeyInputs } from '@/hooks/useKeyInput';
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
+import { AutocompleteResult } from '@/dataStructures/Trie';
 
 type ActiveLineProps = {
   submitLine: (line: string) => void;
   prompt: string;
+  autocomplete: (line: string) => string;
 };
 
-export const ActiveLine = ({ submitLine, prompt }: ActiveLineProps) => {
+export const ActiveLine = ({
+  submitLine,
+  prompt,
+  autocomplete,
+}: ActiveLineProps) => {
   const [text, setText] = useState('');
   const [index, setIndex] = useState(0);
 
@@ -23,6 +29,12 @@ export const ActiveLine = ({ submitLine, prompt }: ActiveLineProps) => {
 
   useKeyInputs('Enter', () => {
     submitLine(text);
+  });
+
+  useKeyInputs('Tab', () => {
+    const completedLine = autocomplete(text);
+    setText(completedLine);
+    setIndex(completedLine.length);
   });
 
   useKeyInputs('Backspace', () => {
