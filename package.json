@@ -14,6 +14,7 @@
     "format:check": "prettier . --check"
   },
   "dependencies": {
+    "idb": "^8.0.0",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
