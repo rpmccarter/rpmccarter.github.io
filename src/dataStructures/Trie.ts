@@ -27,8 +27,7 @@ export class Trie {
   public add(word: string) {
     let curr = this.data;
     for (const char of word) {
-      if (!curr.rest.hasOwnProperty(char))
-        curr.rest[char] = { rest: {}, end: false };
+      if (!curr.rest[char]) curr.rest[char] = { rest: {}, end: false };
       curr = curr.rest[char];
     }
     curr.end = true;
@@ -37,8 +36,9 @@ export class Trie {
   public has(word: string): boolean {
     let curr = this.data;
     for (const char of word) {
-      if (!curr.rest.hasOwnProperty(char)) return false;
-      curr = curr.rest[char];
+      const next = curr.rest[char];
+      if (next === undefined) return false;
+      curr = next;
     }
     return curr.end;
   }
@@ -46,17 +46,22 @@ export class Trie {
   public autocomplete(str: string): AutocompleteResult {
     let curr = this.data;
     for (const char of str) {
-      if (!curr.rest.hasOwnProperty(char)) return { matchType: 'none' };
-      curr = curr.rest[char];
+      const next = curr.rest[char];
+      if (next === undefined) return { matchType: 'none' };
+      curr = next;
     }
 
     const commonChars: string[] = [];
     // keep going deeper as long as there is exactly one possible next
     // character and no other word has ended
     while (Object.keys(curr.rest).length === 1 && !curr.end) {
-      const onlyKey = Object.keys(curr.rest)[0];
+      const onlyEntry = Object.entries(curr.rest)[0];
+      if (onlyEntry === undefined) {
+        throw Error('invariant error: first element of array undefined');
+      }
+      const [onlyKey, onlyValue] = onlyEntry;
       commonChars.push(onlyKey);
-      curr = curr.rest[onlyKey];
+      curr = onlyValue;
     }
 
     const prefix = str + commonChars.join('');
