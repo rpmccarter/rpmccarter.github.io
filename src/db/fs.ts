@@ -43,7 +43,7 @@ export const fsDB = openDB<FsDBSchema>('fs', 1, {
   },
 });
 
-async function resolveInodeId(db: FsDB, path: string): Promise<number> {
+export async function resolveInodeId(db: FsDB, path: string): Promise<number> {
   const normalizedPath = myPath.normalize(path);
   const pathSegments = normalizedPath.split('/').filter(Boolean);
 
@@ -106,7 +106,7 @@ async function readFile(db: FsDB, directoryInodeId: number, name: string) {
   return fileBlob;
 }
 
-async function readDirectory(db: FsDB, directoryInodeId: number) {
+export async function readDirectory(db: FsDB, directoryInodeId: number) {
   const checkDirectoryTx = db.transaction(['inodes', 'blobs'], 'readonly');
   const inodes = checkDirectoryTx.objectStore('inodes');
   const blobs = checkDirectoryTx.objectStore('blobs');

@@ -1,8 +1,12 @@
 import { AutocompleteResult, Trie } from '@/dataStructures/Trie';
 import { echo } from './echo';
 import { split } from 'shellwords-ts';
+import { ls } from './ls';
 
-export type Executor = (argv: string[], log: (str: string) => void) => number;
+export type Executor = (
+  argv: string[],
+  log: (str: string) => void
+) => number | Promise<number>;
 export type Autocompleter = (
   argv: string[],
   prefix: string
@@ -13,9 +17,10 @@ export type Command = {
   autocompleter?: Autocompleter;
 };
 
-const cmdNameToCmd: Record<string, Command> = {
-  echo,
-};
+const cmdNameToCmd = new Map<string, Command>([
+  ['echo', echo],
+  ['ls', ls],
+]);
 
 const cmdTrie = new Trie(Object.keys(cmdNameToCmd));
 
@@ -24,12 +29,13 @@ export const executeCommand = async (
   argv: string[],
   log: (str: string) => void
 ) => {
-  if (!cmdNameToCmd.hasOwnProperty(cmd)) {
+  const cmdObj = cmdNameToCmd.get(cmd);
+  if (cmdObj === undefined) {
     log(`rmsh: command not found: ${cmd}`);
     return 127;
   }
 
-  return cmdNameToCmd[cmd].executor(argv, log);
+  return await cmdObj.executor(argv, log);
 };
 
 const autocompleteArgs = (
@@ -37,9 +43,10 @@ const autocompleteArgs = (
   argv: string[],
   prefix: string
 ): AutocompleteResult => {
-  if (!cmdNameToCmd.hasOwnProperty(cmd)) return { matchType: 'none' };
+  const cmdObj = cmdNameToCmd.get(cmd);
+  if (cmdObj === undefined) return { matchType: 'none' };
 
-  const autocompleter = cmdNameToCmd[cmd].autocompleter;
+  const autocompleter = cmdObj.autocompleter;
   if (!autocompleter) return { matchType: 'none' };
 
   return autocompleter(argv, prefix);
