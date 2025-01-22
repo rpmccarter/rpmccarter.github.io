@@ -1,4 +1,9 @@
 import { FsDBUpgradeTX } from '@/db/fs';
+import {
+  ROOT_DIR_INODE_ID_KEY,
+  WORKING_DIR_INODE_ID_KEY,
+  WORKING_DIR_KEY,
+} from '@/shell/constants';
 
 export default async function initFs(tx: FsDBUpgradeTX) {
   const inodes = tx.objectStore('inodes');
@@ -30,7 +35,7 @@ export default async function initFs(tx: FsDBUpgradeTX) {
     .map((pair) => pair.join('\t'))
     .join('\n');
   await blobs.put(new Blob([directoryContentString]), rootBlobId);
-  await inodes.add({
+  const rootInodeId = await inodes.add({
     mode: 'directory',
     size: 0,
     accessedTime: now,
@@ -39,4 +44,7 @@ export default async function initFs(tx: FsDBUpgradeTX) {
     linkCount: 1,
     blobId: rootBlobId,
   });
+  localStorage.setItem(ROOT_DIR_INODE_ID_KEY, rootInodeId.toString());
+  localStorage.setItem(WORKING_DIR_INODE_ID_KEY, rootInodeId.toString());
+  localStorage.setItem(WORKING_DIR_KEY, '/');
 }
