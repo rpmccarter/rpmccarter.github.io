@@ -1,11 +1,12 @@
 'use client';
 
-import { ActiveCommand } from '@/components/ActiveCommand';
 import { InactiveLine } from '@/components/InactiveLine';
 import { EnvContext } from '@/context/EnvContext';
-import '@/db/fs';
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
+
+const ActiveCommand = dynamic(() => import('@/components/ActiveCommand'));
 
 export const Terminal = () => {
   const [lines, setLines] = useState<string[]>([]);

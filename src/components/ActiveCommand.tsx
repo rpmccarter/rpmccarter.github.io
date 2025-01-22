@@ -10,11 +10,11 @@ type ActiveCommandProps = {
   onExecutionEnd: () => void;
 };
 
-export const ActiveCommand = ({
+export default function ActiveCommand({
   writeLine,
   onExecutionStart,
   onExecutionEnd,
-}: ActiveCommandProps) => {
+}: ActiveCommandProps) {
   const prompt = '> ';
   const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
 
@@ -82,7 +82,7 @@ export const ActiveCommand = ({
       )}
     </>
   );
-};
+}
 
 const replaceEnd = (str: string, before: string, after: string): string => {
   const lastIndex = str.lastIndexOf(before);
