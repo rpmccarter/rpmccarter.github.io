@@ -5,6 +5,7 @@ import {
   WORKING_DIR_INODE_ID_KEY,
 } from '@/shell/constants';
 import { readDirectoryBlob } from './readDirectoryBlob';
+import { SysError } from './SysError';
 
 export async function resolveInodeId(db: FsDB, path: string): Promise<number> {
   const pathSegments = path.split('/').filter(Boolean);
@@ -34,7 +35,7 @@ async function resolveInodeIdRecursive(
   const { directoryContents } = await readDirectoryBlob(db, inodeId);
   const nextInodeId = directoryContents.get(pathSegments[index]);
   if (nextInodeId === undefined) {
-    throw Error('no such file or directory');
+    throw new SysError('ENOENT', 'no such file or directory');
   }
 
   return resolveInodeIdRecursive(db, nextInodeId, pathSegments, index + 1);
