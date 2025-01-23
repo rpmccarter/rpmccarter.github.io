@@ -1,7 +1,11 @@
 import { AutocompleteResult, Trie } from '@/dataStructures/Trie';
-import { echo } from './echo';
+import { echo } from './commands/echo';
 import { split } from 'shellwords-ts';
-import { ls } from './ls';
+import { ls } from './commands/ls';
+import { mkdir } from './commands/mkdir';
+import { pwd } from './commands/pwd';
+import { cd } from './commands/cd';
+import { rmdir } from './commands/rmdir';
 
 export type Executor = (
   argv: string[],
@@ -17,12 +21,18 @@ export type Command = {
   autocompleter?: Autocompleter;
 };
 
-const cmdNameToCmd = new Map<string, Command>([
-  ['echo', echo],
-  ['ls', ls],
-]);
+const cmdNameToCmd = new Map<string, Command>(
+  Object.entries({
+    echo,
+    ls,
+    mkdir,
+    rmdir,
+    pwd,
+    cd,
+  })
+);
 
-const cmdTrie = new Trie(Object.keys(cmdNameToCmd));
+const cmdTrie = new Trie(cmdNameToCmd.keys().toArray());
 
 export const executeCommand = async (
   cmd: string,

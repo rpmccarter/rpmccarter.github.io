@@ -23,6 +23,11 @@ describe('normalize', () => {
     expect(myPath.normalize(path)).toEqual('foo');
   });
 
+  it('resolves with . when appropriate', () => {
+    const path = 'foo/..';
+    expect(myPath.normalize(path)).toEqual('.');
+  });
+
   test.each([
     'foo/bar',
     '/foo/bar',
@@ -33,6 +38,8 @@ describe('normalize', () => {
     '/',
     '/../..',
     '/../foo',
+    '.',
+    'foo/.',
     '...',
     '.foo',
   ])('matches node:path behavior for "%s"', (path) => {
