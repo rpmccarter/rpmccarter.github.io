@@ -1,4 +1,4 @@
-import { Executor } from './executeCommand';
+import { Executor } from '../executeCommand';
 
 const executor: Executor = (argv, log) => {
   log(argv.join(' '));

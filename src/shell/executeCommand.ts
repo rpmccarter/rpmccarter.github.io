@@ -1,7 +1,7 @@
 import { AutocompleteResult, Trie } from '@/dataStructures/Trie';
-import { echo } from './echo';
+import { echo } from './commands/echo';
 import { split } from 'shellwords-ts';
-import { ls } from './ls';
+import { ls } from './commands/ls';
 
 export type Executor = (
   argv: string[],

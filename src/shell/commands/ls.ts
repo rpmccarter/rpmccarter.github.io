@@ -1,5 +1,5 @@
 import { fsDB, readDirectory, resolveInodeId } from '@/db/fs';
-import { Executor } from './executeCommand';
+import { Executor } from '../executeCommand';
 
 const executor: Executor = async (argv, log) => {
   const inodeId = await resolveInodeId(await fsDB, argv[0] ?? '');

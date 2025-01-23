@@ -25,7 +25,7 @@ export const Terminal = () => {
       writeLine('rmsh v0.0.1');
     }, 300);
     setTimeout(() => {
-      writeLine('much more coming soon...');
+      writeLine('a wip project');
       setActive(false);
     }, 600);
     // eslint-disable-next-line react-hooks/exhaustive-deps
