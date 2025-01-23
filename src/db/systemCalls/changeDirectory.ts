@@ -19,6 +19,18 @@ export async function changeDirectory(path: string | undefined) {
   } else {
     const inodeId = await resolveInodeId(await fsDB, path);
 
+    const inode = await (await fsDB)
+      .transaction('inodes', 'readonly')
+      .objectStore('inodes')
+      .get(inodeId);
+
+    if (inode === undefined) {
+      throw new SysError('ENOENT', 'could not load inode');
+    }
+    if (inode.mode !== 'directory') {
+      throw new SysError('ENOTDIR', 'inode is not a directory');
+    }
+
     const normalizedPath = myPath.normalize(path);
 
     const basePathStr = localStorage.getItem(WORKING_DIR_KEY);
