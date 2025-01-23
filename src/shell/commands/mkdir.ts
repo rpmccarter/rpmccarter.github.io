@@ -1,7 +1,7 @@
 import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
-import { createDirectory } from '@/db/systemCalls/createDirectory';
+import { createDirectory } from '@/systemCalls/createDirectory';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);

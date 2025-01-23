@@ -4,7 +4,7 @@ import {
   WORKING_DIR_INODE_ID_KEY,
   WORKING_DIR_KEY,
 } from '@/shell/constants';
-import { fsDB } from '../fs';
+import { fsDB } from '@/db/fs';
 import { resolveInodeId } from './utils/resolveInodeId';
 import { SysError } from './utils/SysError';
 

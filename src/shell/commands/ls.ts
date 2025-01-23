@@ -1,9 +1,9 @@
 import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
-import { readDirectory } from '@/db/systemCalls/readDirectory';
-import { resolveInodeId } from '@/db/systemCalls/utils/resolveInodeId';
-import { SysError } from '@/db/systemCalls/utils/SysError';
+import { readDirectory } from '@/systemCalls/readDirectory';
+import { resolveInodeId } from '@/systemCalls/utils/resolveInodeId';
+import { SysError } from '@/systemCalls/utils/SysError';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);

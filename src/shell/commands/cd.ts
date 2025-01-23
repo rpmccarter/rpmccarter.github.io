@@ -1,6 +1,6 @@
-import { SysError } from '@/db/systemCalls/utils/SysError';
+import { SysError } from '@/systemCalls/utils/SysError';
 import { Executor } from '../executeCommand';
-import { changeDirectory } from '@/db/systemCalls/changeDirectory';
+import { changeDirectory } from '@/systemCalls/changeDirectory';
 
 const executor: Executor = async (argv, log) => {
   const [firstArg] = argv;

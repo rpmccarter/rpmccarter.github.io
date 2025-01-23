@@ -1,5 +1,5 @@
 import { myPath } from '@/modules/myPath';
-import { FsDB } from '../fs';
+import { FsDB } from '@/db/fs';
 import { readDirectory } from './readDirectory';
 import { SysError } from './utils/SysError';
 
