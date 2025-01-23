@@ -1,12 +1,12 @@
-import { fsDB, readDirectory, resolveInodeId } from '@/db/fs';
+import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
 import {
   ROOT_DIR_INODE_ID_KEY,
   WORKING_DIR_INODE_ID_KEY,
   WORKING_DIR_KEY,
 } from '../constants';
 import { myPath } from '@/modules/myPath';
+import { resolveInodeId } from '@/db/systemCalls/utils/resolveInodeId';
 
 const executor: Executor = async (argv, log) => {
   const [firstArg] = argv;

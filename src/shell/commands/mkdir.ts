@@ -1,7 +1,9 @@
-import { createDirectory, fsDB, resolveInodeId } from '@/db/fs';
+import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
 import { myPath } from '@/modules/myPath';
+import { createDirectory } from '@/db/systemCalls/createDirectory';
+import { resolveInodeId } from '@/db/systemCalls/utils/resolveInodeId';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
