@@ -3,6 +3,8 @@ import { echo } from './commands/echo';
 import { split } from 'shellwords-ts';
 import { ls } from './commands/ls';
 import { mkdir } from './commands/mkdir';
+import { pwd } from './commands/pwd';
+import { cd } from './commands/cd';
 
 export type Executor = (
   argv: string[],
@@ -23,6 +25,8 @@ const cmdNameToCmd = new Map<string, Command>(
     echo,
     ls,
     mkdir,
+    pwd,
+    cd,
   })
 );
 

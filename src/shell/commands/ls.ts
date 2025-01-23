@@ -13,7 +13,7 @@ const executor: Executor = async (argv, log) => {
     .filter((entry) => showHidden || !entry.startsWith('.'))
     .toArray();
 
-  log(entries.join('\n') + '\n');
+  log(entries.join('\n'));
 
   return 0;
 };
