@@ -10,18 +10,18 @@ async function readFile(db: FsDB, directoryInodeId: number, name: string) {
 
   const fileInodeId = directoryContents.get(name);
   if (fileInodeId === undefined) {
-    throw Error('file does not exist');
+    throw new SysError('ENOENT', 'file does not exist');
   }
 
   const fileInode = await inodes.get(fileInodeId);
   if (!fileInode) {
-    throw Error('file inode not found');
+    throw new SysError('ENOENT', 'file inode not found');
   }
 
   const { blobId: fileBlobId } = fileInode;
   const fileBlob = await blobs.get(fileBlobId);
   if (!fileBlob) {
-    throw Error('file blob not found');
+    throw new SysError('ENOENT', 'file blob not found');
   }
 
   return fileBlob;

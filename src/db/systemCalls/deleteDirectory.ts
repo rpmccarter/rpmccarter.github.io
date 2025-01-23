@@ -15,7 +15,7 @@ export async function deleteDirectory(
   const targetDirInodeId = parentDirContents.get(name);
 
   if (targetDirInodeId === undefined) {
-    throw Error('file does not exist');
+    throw new SysError('ENOENT', 'file does not exist');
   }
 
   const {
@@ -24,7 +24,7 @@ export async function deleteDirectory(
   } = await readDirectory(db, targetDirInodeId);
 
   if (targetDirContents.size > 2) {
-    throw Error('directory not empty');
+    throw new SysError('ENOTEMPTY', 'directory not empty');
   }
 
   const deleteDirTx = db.transaction(['inodes', 'blobs'], 'readwrite');
@@ -33,18 +33,18 @@ export async function deleteDirectory(
 
   const parentDirInode = await inodes.get(parentDirInodeId);
   if (!parentDirInode) {
-    throw Error('parent directory inode not found');
+    throw new SysError('ENOENT', 'parent directory inode not found');
   }
   if (parentDirInode.modifiedTime > parentDirModifiedTime) {
-    throw Error('parent directory inode write race condition');
+    throw new SysError('EIO', 'parent directory inode write race condition');
   }
 
   const targetDirInode = await inodes.get(targetDirInodeId);
   if (!targetDirInode) {
-    throw Error('target directory inode not found');
+    throw new SysError('ENOENT', 'target directory inode not found');
   }
   if (targetDirInode.modifiedTime > targetDirModifiedTime) {
-    throw Error('target directory inode write race condition');
+    throw new SysError('EIO', 'target directory inode write race condition');
   }
 
   await blobs.delete(targetDirInode.blobId);

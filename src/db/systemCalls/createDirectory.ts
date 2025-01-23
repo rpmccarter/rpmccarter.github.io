@@ -11,7 +11,7 @@ export async function createDirectory(
     await readDirectory(db, parentDirInodeId);
 
   if (parentDirContents.has(name)) {
-    throw Error('file already exists');
+    throw new SysError('EEXIST', 'file already exists');
   }
 
   const writeDirTx = db.transaction(['inodes', 'blobs'], 'readwrite');
@@ -20,10 +20,10 @@ export async function createDirectory(
 
   const directoryInode = await inodes.get(parentDirInodeId);
   if (!directoryInode) {
-    throw Error('directory inode not found');
+    throw new SysError('ENOENT', 'directory inode not found');
   }
   if (directoryInode.modifiedTime > modifiedTime) {
-    throw Error('directory inode write race condition');
+    throw new SysError('EIO', 'directory inode write race condition');
   }
 
   const now = new Date();

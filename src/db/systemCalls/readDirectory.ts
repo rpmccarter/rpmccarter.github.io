@@ -8,13 +8,13 @@ export async function readDirectory(db: FsDB, directoryInodeId: number) {
 
   const directoryInode = await inodes.get(directoryInodeId);
   if (!directoryInode) {
-    throw Error('directory inode not found');
+    throw new SysError('ENOENT', 'directory inode not found');
   }
 
   const { blobId: directoryBlobId, modifiedTime } = directoryInode;
   const directoryContentsBlob = await blobs.get(directoryBlobId);
   if (!directoryContentsBlob) {
-    throw Error('directory blob not found');
+    throw new SysError('ENOENT', 'directory blob not found');
   }
 
   const directoryContents = await deserializeDirectoryContent(
