@@ -2,6 +2,7 @@ import { AutocompleteResult, Trie } from '@/dataStructures/Trie';
 import { echo } from './commands/echo';
 import { split } from 'shellwords-ts';
 import { ls } from './commands/ls';
+import { mkdir } from './commands/mkdir';
 
 export type Executor = (
   argv: string[],
@@ -17,10 +18,13 @@ export type Command = {
   autocompleter?: Autocompleter;
 };
 
-const cmdNameToCmd = new Map<string, Command>([
-  ['echo', echo],
-  ['ls', ls],
-]);
+const cmdNameToCmd = new Map<string, Command>(
+  Object.entries({
+    echo,
+    ls,
+    mkdir,
+  })
+);
 
 const cmdTrie = new Trie(Object.keys(cmdNameToCmd));
 

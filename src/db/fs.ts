@@ -129,6 +129,64 @@ export async function readDirectory(db: FsDB, directoryInodeId: number) {
   return { directoryContents, modifiedTime };
 }
 
+export async function createDirectory(
+  db: FsDB,
+  directoryInodeId: number,
+  name: string
+) {
+  const { directoryContents, modifiedTime } = await readDirectory(
+    db,
+    directoryInodeId
+  );
+
+  if (directoryContents.has(name)) {
+    throw Error('file already exists');
+  }
+
+  const writeDirTx = db.transaction(['inodes', 'blobs'], 'readwrite');
+  const inodes = writeDirTx.objectStore('inodes');
+  const blobs = writeDirTx.objectStore('blobs');
+
+  const directoryInode = await inodes.get(directoryInodeId);
+  if (!directoryInode) {
+    throw Error('directory inode not found');
+  }
+  if (directoryInode.modifiedTime > modifiedTime) {
+    throw Error('directory inode write race condition');
+  }
+
+  const now = new Date();
+  const newDirBlobId = await blobs.add(new Blob());
+  const newDirBlob = serializeDirectoryContent(
+    new Map([
+      ['.', newDirBlobId],
+      ['..', directoryInodeId],
+    ])
+  );
+  await blobs.put(newDirBlob, newDirBlobId);
+  const newDirInodeId = await inodes.add({
+    mode: 'directory',
+    size: 0,
+    accessedTime: now,
+    modifiedTime: now,
+    createdTime: now,
+    linkCount: 1,
+    blobId: newDirBlobId,
+  });
+
+  directoryContents.set(name, newDirInodeId);
+  const directoryBlob = serializeDirectoryContent(directoryContents);
+  await blobs.put(directoryBlob, directoryInode.blobId);
+  await inodes.put(
+    {
+      ...directoryInode,
+      accessedTime: now,
+      modifiedTime: now,
+    },
+    directoryInodeId
+  );
+}
+
 export async function createFile(
   db: FsDB,
   directoryInodeId: number,
@@ -171,11 +229,14 @@ export async function createFile(
   directoryContents.set(name, newFileInodeId);
   const directoryBlob = serializeDirectoryContent(directoryContents);
   await blobs.put(directoryBlob, directoryInode.blobId);
-  await inodes.put({
-    ...directoryInode,
-    accessedTime: now,
-    modifiedTime: now,
-  });
+  await inodes.put(
+    {
+      ...directoryInode,
+      accessedTime: now,
+      modifiedTime: now,
+    },
+    directoryInodeId
+  );
 }
 
 async function deserializeDirectoryContent(
