@@ -4,6 +4,7 @@ import { partitionArgs } from '../utils';
 import { myPath } from '@/modules/myPath';
 import { deleteDirectory } from '@/db/systemCalls/deleteDirectory';
 import { resolveInodeId } from '@/db/systemCalls/utils/resolveInodeId';
+import { SysError } from '@/db/systemCalls/utils/SysError';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
@@ -27,7 +28,17 @@ const executor: Executor = async (argv, log) => {
     return 1;
   }
 
-  await deleteDirectory(await fsDB, firstDirArg);
+  try {
+    await deleteDirectory(await fsDB, firstDirArg);
+  } catch (e) {
+    if (e instanceof SysError) {
+      if (e.code === 'ENOTEMPTY') {
+        log(`rmdir: ${firstDirArg}: directory not empty`);
+      }
+    } else {
+      throw e;
+    }
+  }
 
   return 0;
 };
