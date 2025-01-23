@@ -2,16 +2,21 @@ import { FsDB } from '../fs';
 import { serializeDirectoryContent } from './utils/dir';
 import { readDirectory } from './readDirectory';
 import { SysError } from './utils/SysError';
+import { myPath } from '@/modules/myPath';
+import { resolveInodeId } from './utils/resolveInodeId';
 
-export async function createDirectory(
-  db: FsDB,
-  parentDirInodeId: number,
-  name: string
-) {
+export async function createDirectory(db: FsDB, path: string) {
+  const pathSegments = path.split('/').filter(Boolean);
+  const isAbs = myPath.isAbsolute(path);
+  const dirName = pathSegments.pop() ?? '.';
+  const parentDirPath = (isAbs ? '/' : '') + pathSegments.join('/');
+
+  const parentDirInodeId = await resolveInodeId(db, parentDirPath);
+
   const { directoryContents: parentDirContents, modifiedTime } =
-    await readDirectory(db, parentDirInodeId);
+    await readDirectory(db, parentDirPath);
 
-  if (parentDirContents.has(name)) {
+  if (parentDirContents.has(dirName)) {
     throw new SysError('EEXIST', 'file already exists');
   }
 
@@ -46,7 +51,7 @@ export async function createDirectory(
     blobId: newDirBlobId,
   });
 
-  parentDirContents.set(name, newDirInodeId);
+  parentDirContents.set(dirName, newDirInodeId);
   const directoryBlob = serializeDirectoryContent(parentDirContents);
   await blobs.put(directoryBlob, directoryInode.blobId);
   await inodes.put(

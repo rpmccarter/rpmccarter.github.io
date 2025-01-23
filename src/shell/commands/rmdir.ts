@@ -27,16 +27,7 @@ const executor: Executor = async (argv, log) => {
     return 1;
   }
 
-  const lastSlashIndex = normalizedDirArg.lastIndexOf('/');
-  const parentDir =
-    lastSlashIndex > -1 ? normalizedDirArg.slice(0, lastSlashIndex) : '';
-  const targetDirName =
-    lastSlashIndex > -1
-      ? normalizedDirArg.slice(lastSlashIndex + 1)
-      : normalizedDirArg;
-
-  const existingDirInodeId = await resolveInodeId(await fsDB, parentDir);
-  await deleteDirectory(await fsDB, existingDirInodeId, targetDirName);
+  await deleteDirectory(await fsDB, firstDirArg);
 
   return 0;
 };

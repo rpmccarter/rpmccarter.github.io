@@ -66,8 +66,7 @@ async function getEntries(
   showHidden: boolean
 ): Promise<GetEntriesResult> {
   try {
-    const inodeId = await resolveInodeId(await fsDB, path);
-    const { directoryContents } = await readDirectory(await fsDB, inodeId);
+    const { directoryContents } = await readDirectory(await fsDB, path);
     const entries = directoryContents
       .keys()
       .filter((entry) => showHidden || !entry.startsWith('.'))

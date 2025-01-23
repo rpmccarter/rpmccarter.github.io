@@ -2,19 +2,23 @@ import { FsDB } from '../fs';
 import { serializeDirectoryContent } from './utils/dir';
 import { readDirectory } from './readDirectory';
 import { SysError } from './utils/SysError';
+import { myPath } from '@/modules/myPath';
+import { resolveInodeId } from './utils/resolveInodeId';
 
-export async function createFile(
-  db: FsDB,
-  directoryInodeId: number,
-  name: string,
-  content: Blob
-) {
+export async function createFile(db: FsDB, path: string, content: Blob) {
+  const pathSegments = path.split('/').filter(Boolean);
+  const isAbs = myPath.isAbsolute(path);
+  const fileName = pathSegments.pop() ?? '.';
+  const parentDirPath = (isAbs ? '/' : '') + pathSegments.join('/');
+
+  const parentDirInodeId = await resolveInodeId(db, parentDirPath);
+
   const { directoryContents, modifiedTime } = await readDirectory(
     db,
-    directoryInodeId
+    parentDirPath
   );
 
-  if (directoryContents.has(name)) {
+  if (directoryContents.has(fileName)) {
     throw new SysError('EEXIST', 'file already exists');
   }
 
@@ -22,11 +26,11 @@ export async function createFile(
   const inodes = writeFileTx.objectStore('inodes');
   const blobs = writeFileTx.objectStore('blobs');
 
-  const directoryInode = await inodes.get(directoryInodeId);
-  if (!directoryInode) {
+  const parentDirInode = await inodes.get(parentDirInodeId);
+  if (!parentDirInode) {
     throw new SysError('ENOENT', 'directory inode not found');
   }
-  if (directoryInode.modifiedTime > modifiedTime) {
+  if (parentDirInode.modifiedTime > modifiedTime) {
     throw new SysError('EIO', 'directory inode write race condition');
   }
 
@@ -42,15 +46,15 @@ export async function createFile(
     blobId: newFileBlobId,
   });
 
-  directoryContents.set(name, newFileInodeId);
+  directoryContents.set(fileName, newFileInodeId);
   const directoryBlob = serializeDirectoryContent(directoryContents);
-  await blobs.put(directoryBlob, directoryInode.blobId);
+  await blobs.put(directoryBlob, parentDirInode.blobId);
   await inodes.put(
     {
-      ...directoryInode,
+      ...parentDirInode,
       accessedTime: now,
       modifiedTime: now,
     },
-    directoryInodeId
+    parentDirInodeId
   );
 }

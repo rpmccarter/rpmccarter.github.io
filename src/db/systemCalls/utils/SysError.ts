@@ -3,11 +3,13 @@ type SysErrorCode =
   | 'ENOENT'
   | 'EIO'
   | 'EACCES'
+  | 'EBUSY'
   | 'EEXIST'
   | 'ENOTDIR'
   | 'EISDIR'
   | 'EINVAL'
-  | 'ENOTEMPTY';
+  | 'ENOTEMPTY'
+  | 'EGREGIOUS';
 
 export class SysError extends Error {
   constructor(
