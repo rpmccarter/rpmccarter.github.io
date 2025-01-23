@@ -1,6 +1,7 @@
 import { FsDB } from '../fs';
 import { serializeDirectoryContent } from './utils/dir';
 import { readDirectory } from './readDirectory';
+import { SysError } from './utils/SysError';
 
 export async function deleteDirectory(
   db: FsDB,

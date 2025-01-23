@@ -9,7 +9,7 @@ type SysErrorCode =
   | 'EINVAL'
   | 'ENOTEMPTY';
 
-class SysError extends Error {
+export class SysError extends Error {
   constructor(
     public code: SysErrorCode,
     message: string

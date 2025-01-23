@@ -3,6 +3,7 @@ import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
 import { readDirectory } from '@/db/systemCalls/readDirectory';
 import { resolveInodeId } from '@/db/systemCalls/utils/resolveInodeId';
+import { SysError } from '@/db/systemCalls/utils/SysError';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
@@ -74,7 +75,6 @@ async function getEntries(
 
     return { status: 'success', path, entries };
   } catch (reason) {
-    console.log(reason);
     return { status: 'failure', path, reason };
   }
 }

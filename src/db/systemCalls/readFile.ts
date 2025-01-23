@@ -1,5 +1,6 @@
 import { FsDB } from '../fs';
 import { readDirectory } from './readDirectory';
+import { SysError } from './utils/SysError';
 
 async function readFile(db: FsDB, directoryInodeId: number, name: string) {
   const { directoryContents } = await readDirectory(db, directoryInodeId);

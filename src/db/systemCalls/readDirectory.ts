@@ -1,5 +1,6 @@
 import { FsDB } from '../fs';
 import { deserializeDirectoryContent } from './utils/dir';
+import { SysError } from './utils/SysError';
 
 export async function readDirectory(db: FsDB, directoryInodeId: number) {
   const checkDirectoryTx = db.transaction(['inodes', 'blobs'], 'readonly');
