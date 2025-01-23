@@ -1,4 +1,4 @@
-import { createDirectory, fsDB, resolveInodeId } from '@/db/fs';
+import { deleteDirectory, fsDB, resolveInodeId } from '@/db/fs';
 import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
 import { myPath } from '@/modules/myPath';
@@ -8,30 +8,35 @@ const executor: Executor = async (argv, log) => {
 
   const [firstDirArg] = positionals;
   if (firstDirArg === undefined) {
-    log('mkdir: must supply directory name');
+    log('rmdir: must supply directory name');
     return 64;
   }
 
   let normalizedDirArg = myPath.normalize(firstDirArg);
   if (normalizedDirArg === '/') {
-    log('mkdir: /: file exists');
+    log('rmdir: /: cannot remove root directory');
     return 1;
   }
 
   normalizedDirArg.replace(/\/$/, ''); // remove trailing slash if present
 
+  if (normalizedDirArg === '.') {
+    log('rmdir: .: invalid argument');
+    return 1;
+  }
+
   const lastSlashIndex = normalizedDirArg.lastIndexOf('/');
   const parentDir =
     lastSlashIndex > -1 ? normalizedDirArg.slice(0, lastSlashIndex) : '';
-  const newDirName =
+  const targetDirName =
     lastSlashIndex > -1
       ? normalizedDirArg.slice(lastSlashIndex + 1)
       : normalizedDirArg;
 
-  const parentDirInodeId = await resolveInodeId(await fsDB, parentDir);
-  await createDirectory(await fsDB, parentDirInodeId, newDirName);
+  const existingDirInodeId = await resolveInodeId(await fsDB, parentDir);
+  await deleteDirectory(await fsDB, existingDirInodeId, targetDirName);
 
   return 0;
 };
 
-export const mkdir = { executor };
+export const rmdir = { executor };
