@@ -1,44 +1,22 @@
-import { fsDB, readDirectory, resolveInodeId } from '@/db/fs';
+import { SysError } from '@/systemCalls/utils/SysError';
 import { Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
-import {
-  ROOT_DIR_INODE_ID_KEY,
-  WORKING_DIR_INODE_ID_KEY,
-  WORKING_DIR_KEY,
-} from '../constants';
-import { myPath } from '@/modules/myPath';
+import { changeDirectory } from '@/systemCalls/changeDirectory';
 
 const executor: Executor = async (argv, log) => {
   const [firstArg] = argv;
 
-  if (firstArg === undefined) {
-    const rootInodeId = localStorage.getItem(ROOT_DIR_INODE_ID_KEY);
-    if (rootInodeId === null) {
-      log('cd: home directory not found');
-      return 2;
+  try {
+    await changeDirectory(firstArg);
+  } catch (e) {
+    if (e instanceof SysError) {
+      if (e.code === 'ENOENT') {
+        log(`cd: no such file or directory: ${firstArg}`);
+      } else if (e.code === 'ENOTDIR') {
+        log(`cd: not a directory: ${firstArg}`);
+      }
+    } else {
+      throw e;
     }
-    localStorage.setItem(WORKING_DIR_INODE_ID_KEY, rootInodeId);
-    localStorage.setItem(WORKING_DIR_KEY, '/');
-  } else {
-    const inodeId = await resolveInodeId(await fsDB, firstArg);
-
-    const normalizedPath = myPath.normalize(firstArg);
-
-    const basePathStr = localStorage.getItem(WORKING_DIR_KEY);
-    if (basePathStr === null) {
-      log('cd: missing directory information');
-      return 3;
-    }
-
-    let newPath = myPath.isAbsolute(normalizedPath)
-      ? normalizedPath
-      : myPath.normalize(basePathStr + '/' + normalizedPath);
-    if (newPath !== '/' && newPath.endsWith('/')) {
-      newPath = newPath.slice(0, -1);
-    }
-
-    localStorage.setItem(WORKING_DIR_INODE_ID_KEY, inodeId.toString());
-    localStorage.setItem(WORKING_DIR_KEY, newPath);
   }
 
   return 0;

@@ -1,7 +1,7 @@
-import { createDirectory, fsDB, resolveInodeId } from '@/db/fs';
+import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
-import { myPath } from '@/modules/myPath';
+import { createDirectory } from '@/systemCalls/createDirectory';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
@@ -12,24 +12,7 @@ const executor: Executor = async (argv, log) => {
     return 64;
   }
 
-  let normalizedDirArg = myPath.normalize(firstDirArg);
-  if (normalizedDirArg === '/') {
-    log('mkdir: /: file exists');
-    return 1;
-  }
-
-  normalizedDirArg.replace(/\/$/, ''); // remove trailing slash if present
-
-  const lastSlashIndex = normalizedDirArg.lastIndexOf('/');
-  const parentDir =
-    lastSlashIndex > -1 ? normalizedDirArg.slice(0, lastSlashIndex) : '';
-  const newDirName =
-    lastSlashIndex > -1
-      ? normalizedDirArg.slice(lastSlashIndex + 1)
-      : normalizedDirArg;
-
-  const parentDirInodeId = await resolveInodeId(await fsDB, parentDir);
-  await createDirectory(await fsDB, parentDirInodeId, newDirName);
+  await createDirectory(await fsDB, firstDirArg);
 
   return 0;
 };

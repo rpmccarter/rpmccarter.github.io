@@ -1,7 +1,10 @@
-import { deleteDirectory, fsDB, resolveInodeId } from '@/db/fs';
+import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
 import { myPath } from '@/modules/myPath';
+import { deleteDirectory } from '@/systemCalls/deleteDirectory';
+import { resolveInodeId } from '@/systemCalls/utils/resolveInodeId';
+import { SysError } from '@/systemCalls/utils/SysError';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
@@ -25,16 +28,17 @@ const executor: Executor = async (argv, log) => {
     return 1;
   }
 
-  const lastSlashIndex = normalizedDirArg.lastIndexOf('/');
-  const parentDir =
-    lastSlashIndex > -1 ? normalizedDirArg.slice(0, lastSlashIndex) : '';
-  const targetDirName =
-    lastSlashIndex > -1
-      ? normalizedDirArg.slice(lastSlashIndex + 1)
-      : normalizedDirArg;
-
-  const existingDirInodeId = await resolveInodeId(await fsDB, parentDir);
-  await deleteDirectory(await fsDB, existingDirInodeId, targetDirName);
+  try {
+    await deleteDirectory(await fsDB, firstDirArg);
+  } catch (e) {
+    if (e instanceof SysError) {
+      if (e.code === 'ENOTEMPTY') {
+        log(`rmdir: ${firstDirArg}: directory not empty`);
+      }
+    } else {
+      throw e;
+    }
+  }
 
   return 0;
 };

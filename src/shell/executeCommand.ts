@@ -45,7 +45,17 @@ export const executeCommand = async (
     return 127;
   }
 
-  return await cmdObj.executor(argv, log);
+  try {
+    return await cmdObj.executor(argv, log);
+  } catch (e) {
+    console.error(e);
+    if (e instanceof Error) {
+      log(`rmsh: process crashed: ${e.message}`);
+    } else {
+      log('rmsh: process crashed');
+    }
+    return 127;
+  }
 };
 
 const autocompleteArgs = (
