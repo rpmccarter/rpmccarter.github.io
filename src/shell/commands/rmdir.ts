@@ -4,6 +4,7 @@ import { partitionArgs } from '../utils/partitionArgs';
 import { myPath } from '@/modules/myPath';
 import { deleteDirectory } from '@/systemCalls/deleteDirectory';
 import { SysError } from '@/systemCalls/utils/SysError';
+import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
   const { positionals } = partitionArgs(argv);
@@ -49,4 +50,4 @@ const executor: Executor = async (argv, log) => {
   return 0;
 };
 
-export const rmdir = { executor };
+export const rmdir = { executor, autocompleter: fileAutocompleter(true) };

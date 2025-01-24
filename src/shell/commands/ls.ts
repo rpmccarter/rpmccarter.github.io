@@ -78,4 +78,4 @@ async function getEntries(
   }
 }
 
-export const ls = { executor, autocompleter: fileAutocompleter };
+export const ls = { executor, autocompleter: fileAutocompleter() };
