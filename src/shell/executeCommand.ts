@@ -76,8 +76,9 @@ async function autocompleteArgs(
   return await autocompleter(argv, prefix);
 }
 
-const autocompleteCommand = async (partialCmd: string) =>
-  cmdTrie.autocomplete(partialCmd);
+function autocompleteCommand(partialCmd: string) {
+  return cmdTrie.autocomplete(partialCmd);
+}
 
 export async function autocompleteLine(
   line: string
@@ -87,7 +88,7 @@ export async function autocompleteLine(
 
   // if the command is the whole line, attempt to autocomplete the command
   if (cmd === line) {
-    return { replaced: cmd, result: await autocompleteCommand(cmd) };
+    return { replaced: cmd, result: autocompleteCommand(cmd) };
   }
 
   const argv = words.slice(1);
