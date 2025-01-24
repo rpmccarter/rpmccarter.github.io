@@ -1,6 +1,7 @@
 import { SysError } from '@/systemCalls/utils/SysError';
 import { Executor } from '../executeCommand';
 import { changeDirectory } from '@/systemCalls/changeDirectory';
+import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
   const [firstArg] = argv;
@@ -22,4 +23,4 @@ const executor: Executor = async (argv, log) => {
   return 0;
 };
 
-export const cd = { executor };
+export const cd = { executor, autocompleter: fileAutocompleter(true) };

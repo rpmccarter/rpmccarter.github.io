@@ -1,7 +1,8 @@
 import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
 import { createDirectory } from '@/systemCalls/createDirectory';
+import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
   const { positionals } = partitionArgs(argv);
@@ -17,4 +18,4 @@ const executor: Executor = async (argv, log) => {
   return 0;
 };
 
-export const mkdir = { executor };
+export const mkdir = { executor, autocompleter: fileAutocompleter(true) };

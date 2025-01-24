@@ -2,7 +2,8 @@ import { SysError } from '@/systemCalls/utils/SysError';
 import { Executor } from '../executeCommand';
 import { readFile } from '@/systemCalls/readFile';
 import { fsDB } from '@/db/fs';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
+import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
   const { positionals } = partitionArgs(argv);
@@ -29,4 +30,4 @@ const executor: Executor = async (argv, log) => {
   return 0;
 };
 
-export const cat = { executor };
+export const cat = { executor, autocompleter: fileAutocompleter() };

@@ -1,8 +1,9 @@
 import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
 import { readDirectory } from '@/systemCalls/readDirectory';
 import { SysError } from '@/systemCalls/utils/SysError';
+import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
@@ -77,4 +78,4 @@ async function getEntries(
   }
 }
 
-export const ls = { executor };
+export const ls = { executor, autocompleter: fileAutocompleter() };
