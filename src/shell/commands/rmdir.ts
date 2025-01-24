@@ -3,11 +3,10 @@ import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils';
 import { myPath } from '@/modules/myPath';
 import { deleteDirectory } from '@/systemCalls/deleteDirectory';
-import { resolveInodeId } from '@/systemCalls/utils/resolveInodeId';
 import { SysError } from '@/systemCalls/utils/SysError';
 
 const executor: Executor = async (argv, log) => {
-  const { flags, positionals } = partitionArgs(argv);
+  const { positionals } = partitionArgs(argv);
 
   const [firstDirArg] = positionals;
   if (firstDirArg === undefined) {
@@ -21,7 +20,7 @@ const executor: Executor = async (argv, log) => {
     return 1;
   }
 
-  normalizedDirArg.replace(/\/$/, ''); // remove trailing slash if present
+  normalizedDirArg = normalizedDirArg.replace(/\/$/, ''); // remove trailing slash if present
 
   if (normalizedDirArg === '.') {
     log('rmdir: .: invalid argument');

@@ -3,7 +3,7 @@ import { FsDB } from '@/db/fs';
 import { readDirectory } from './readDirectory';
 import { SysError } from './utils/SysError';
 
-async function readFile(db: FsDB, path: string) {
+export async function readFile(db: FsDB, path: string) {
   const pathSegments = path.split('/').filter(Boolean);
   const isAbs = myPath.isAbsolute(path);
   const fileName = pathSegments.pop() ?? '.';
