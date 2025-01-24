@@ -74,7 +74,9 @@ export default function ActiveCommand({
       ))} */}
       <ActiveLine
         prompt={prompt}
-        submitLine={submitLine}
+        submitLine={(line) => {
+          void submitLine(line);
+        }}
         autocomplete={autocomplete}
       />
       {autocompleteOptions.length > 0 && (

@@ -3,7 +3,6 @@ import { Cursor } from './Cursor';
 import { useCharInputs } from '@/hooks/useCharInputs';
 import { useKeyInputs } from '@/hooks/useKeyInput';
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
-import { AutocompleteResult } from '@/dataStructures/Trie';
 
 type ActiveLineProps = {
   submitLine: (line: string) => void;

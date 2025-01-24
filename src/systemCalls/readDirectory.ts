@@ -1,5 +1,4 @@
-import { fsDB, FsDB } from '@/db/fs';
-import { deserializeDirectoryContent } from './utils/dir';
+import { FsDB } from '@/db/fs';
 import { readDirectoryBlob } from './utils/readDirectoryBlob';
 import { resolveInodeId } from './utils/resolveInodeId';
 

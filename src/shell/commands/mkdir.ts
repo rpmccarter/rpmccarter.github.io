@@ -4,7 +4,7 @@ import { partitionArgs } from '../utils';
 import { createDirectory } from '@/systemCalls/createDirectory';
 
 const executor: Executor = async (argv, log) => {
-  const { flags, positionals } = partitionArgs(argv);
+  const { positionals } = partitionArgs(argv);
 
   const [firstDirArg] = positionals;
   if (firstDirArg === undefined) {
