@@ -7,7 +7,7 @@
     "deploy": "gh-pages -d out -t",
     "dev": "next dev",
     "type": "tsc --noEmit",
-    "build": "next build && touch out/.nojekyll",
+    "build": "next build && touch out/.nojekyll && cp CNAME out",
     "start": "next start",
     "lint": "eslint",
     "clean": "rimraf out",
