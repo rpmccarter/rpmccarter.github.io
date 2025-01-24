@@ -1,10 +1,11 @@
 import { fsDB } from '@/db/fs';
 import { Autocompleter, Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
 import { readDirectory } from '@/systemCalls/readDirectory';
 import { SysError } from '@/systemCalls/utils/SysError';
 import { Trie } from '@/dataStructures/Trie';
 import { stat } from '@/systemCalls/stat';
+import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
   const { flags, positionals } = partitionArgs(argv);
@@ -79,54 +80,4 @@ async function getEntries(
   }
 }
 
-const autocompleter: Autocompleter = async (_argv, prefix) => {
-  const pathSegments = prefix.split('/');
-  const partialPathSegment = pathSegments.pop() ?? '';
-  const parentDirPath = pathSegments.concat('').join('/');
-
-  const { directoryContents } = await readDirectory(await fsDB, parentDirPath);
-
-  const trie = new Trie(
-    directoryContents
-      .keys()
-      .filter((entry) => entry !== '.' && entry !== '..')
-      .toArray()
-  );
-
-  const autocompleteResult = trie.autocomplete(partialPathSegment);
-
-  if (autocompleteResult.matchType === 'none') {
-    return autocompleteResult;
-  }
-
-  if (autocompleteResult.matchType === 'one') {
-    const fileInfo = await stat(
-      await fsDB,
-      parentDirPath + '/' + autocompleteResult.match
-    );
-    return {
-      matchType: 'one',
-      match: pathSegments
-        .concat(
-          autocompleteResult.match,
-          fileInfo.mode === 'directory' ? '' : []
-        )
-        .join('/'),
-    };
-  }
-
-  const resultsWithSlashes = [];
-  for (const result of autocompleteResult.matches) {
-    const fileInfo = await stat(await fsDB, parentDirPath + '/' + result);
-    resultsWithSlashes.push(
-      result + (fileInfo.mode === 'directory' ? '/' : '')
-    );
-  }
-  return {
-    matchType: 'many',
-    prefix: pathSegments.concat(autocompleteResult.prefix).join('/'),
-    matches: resultsWithSlashes,
-  };
-};
-
-export const ls = { executor, autocompleter };
+export const ls = { executor, autocompleter: fileAutocompleter };

@@ -1,6 +1,6 @@
 import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
 import { createDirectory } from '@/systemCalls/createDirectory';
 
 const executor: Executor = async (argv, log) => {

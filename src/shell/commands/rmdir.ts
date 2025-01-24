@@ -1,6 +1,6 @@
 import { fsDB } from '@/db/fs';
 import { Executor } from '../executeCommand';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
 import { myPath } from '@/modules/myPath';
 import { deleteDirectory } from '@/systemCalls/deleteDirectory';
 import { SysError } from '@/systemCalls/utils/SysError';

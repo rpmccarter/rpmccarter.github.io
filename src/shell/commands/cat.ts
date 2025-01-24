@@ -2,7 +2,7 @@ import { SysError } from '@/systemCalls/utils/SysError';
 import { Executor } from '../executeCommand';
 import { readFile } from '@/systemCalls/readFile';
 import { fsDB } from '@/db/fs';
-import { partitionArgs } from '../utils';
+import { partitionArgs } from '../utils/partitionArgs';
 
 const executor: Executor = async (argv, log) => {
   const { positionals } = partitionArgs(argv);

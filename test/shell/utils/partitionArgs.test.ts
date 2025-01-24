@@ -1,4 +1,4 @@
-import { partitionArgs } from '@/shell/utils';
+import { partitionArgs } from '@/shell/utils/partitionArgs';
 import { describe, expect, it } from 'bun:test';
 
 describe('partitionArgs', () => {
