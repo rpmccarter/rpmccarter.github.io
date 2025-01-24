@@ -25,6 +25,10 @@ export async function readFile(db: FsDB, path: string) {
     throw new SysError('ENOENT', 'file inode not found');
   }
 
+  if (fileInode.mode !== 'file') {
+    throw new SysError('EISDIR', 'inode is a directory');
+  }
+
   const { blobId: fileBlobId } = fileInode;
   const fileBlob = await blobs.get(fileBlobId);
   if (!fileBlob) {

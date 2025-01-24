@@ -6,6 +6,8 @@ import { mkdir } from './commands/mkdir';
 import { pwd } from './commands/pwd';
 import { cd } from './commands/cd';
 import { rmdir } from './commands/rmdir';
+import { cat } from './commands/cat';
+import { touch } from './commands/touch';
 
 export type Executor = (
   argv: string[],
@@ -29,6 +31,8 @@ const cmdNameToCmd = new Map<string, Command>(
     rmdir,
     pwd,
     cd,
+    cat,
+    touch,
   })
 );
 

@@ -31,8 +31,15 @@ const executor: Executor = async (argv, log) => {
     await deleteDirectory(await fsDB, firstDirArg);
   } catch (e) {
     if (e instanceof SysError) {
-      if (e.code === 'ENOTEMPTY') {
+      if (e.code === 'ENOENT') {
+        log(`rmdir: ${firstDirArg}: no such file or directory`);
+        return 1;
+      } else if (e.code === 'ENOTEMPTY') {
         log(`rmdir: ${firstDirArg}: directory not empty`);
+        return 1;
+      } else if (e.code === 'ENOTDIR') {
+        log(`rmdir: ${firstDirArg}: not a directory`);
+        return 1;
       }
     } else {
       throw e;

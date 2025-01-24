@@ -14,10 +14,6 @@ export async function deleteDirectory(db: FsDB, path: string) {
 
   const parentDirInodeId = await resolveInodeId(db, parentDirPath);
 
-  if (parentDirInodeId === undefined) {
-    throw new SysError('ENOENT', 'file does not exist');
-  }
-
   const {
     directoryContents: parentDirContents,
     modifiedTime: parentDirModifiedTime,
