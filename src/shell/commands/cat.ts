@@ -2,9 +2,11 @@ import { SysError } from '@/systemCalls/utils/SysError';
 import { Executor } from '../executeCommand';
 import { readFile } from '@/systemCalls/readFile';
 import { fsDB } from '@/db/fs';
+import { partitionArgs } from '../utils';
 
 const executor: Executor = async (argv, log) => {
-  const [firstArg] = argv;
+  const { positionals } = partitionArgs(argv);
+  const [firstArg] = positionals;
 
   if (firstArg === undefined) return 0;
 
