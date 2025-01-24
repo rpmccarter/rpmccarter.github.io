@@ -34,8 +34,8 @@ export default function ActiveCommand({
     [onExecutionEnd, onExecutionStart, writeLine]
   );
 
-  const autocomplete = useCallback((line: string) => {
-    const { replaced, result } = autocompleteLine(line);
+  const autocomplete = useCallback(async (line: string) => {
+    const { replaced, result } = await autocompleteLine(line);
     switch (result.matchType) {
       case 'none':
         return line;

@@ -16,7 +16,7 @@ export type Executor = (
 export type Autocompleter = (
   argv: string[],
   prefix: string
-) => AutocompleteResult;
+) => AutocompleteResult | Promise<AutocompleteResult>;
 
 export type Command = {
   executor: Executor;
@@ -62,32 +62,32 @@ export const executeCommand = async (
   }
 };
 
-const autocompleteArgs = (
+async function autocompleteArgs(
   cmd: string,
   argv: string[],
   prefix: string
-): AutocompleteResult => {
+): Promise<AutocompleteResult> {
   const cmdObj = cmdNameToCmd.get(cmd);
   if (cmdObj === undefined) return { matchType: 'none' };
 
   const autocompleter = cmdObj.autocompleter;
   if (!autocompleter) return { matchType: 'none' };
 
-  return autocompleter(argv, prefix);
-};
+  return await autocompleter(argv, prefix);
+}
 
-const autocompleteCommand = (partialCmd: string) =>
+const autocompleteCommand = async (partialCmd: string) =>
   cmdTrie.autocomplete(partialCmd);
 
-export const autocompleteLine = (
+export async function autocompleteLine(
   line: string
-): { replaced: string; result: AutocompleteResult } => {
+): Promise<{ replaced: string; result: AutocompleteResult }> {
   const words = split(line);
   const cmd = words[0] ?? '';
 
   // if the command is the whole line, attempt to autocomplete the command
   if (cmd === line) {
-    return { replaced: cmd, result: autocompleteCommand(cmd) };
+    return { replaced: cmd, result: await autocompleteCommand(cmd) };
   }
 
   const argv = words.slice(1);
@@ -96,9 +96,12 @@ export const autocompleteLine = (
   // if lastArg is still being written, attempt to complete it
   if (lastArg !== undefined && line.endsWith(lastArg)) {
     argv.pop();
-    return { replaced: lastArg, result: autocompleteArgs(cmd, argv, lastArg) };
+    return {
+      replaced: lastArg,
+      result: await autocompleteArgs(cmd, argv, lastArg),
+    };
   }
 
   // lastArg is already written - autocomplete empty string
-  return { replaced: '', result: autocompleteArgs(cmd, argv, '') };
-};
+  return { replaced: '', result: await autocompleteArgs(cmd, argv, '') };
+}

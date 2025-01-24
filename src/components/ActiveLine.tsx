@@ -7,7 +7,7 @@ import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
 type ActiveLineProps = {
   submitLine: (line: string) => void;
   prompt: string;
-  autocomplete: (line: string) => string;
+  autocomplete: (line: string) => Promise<string>;
 };
 
 export const ActiveLine = ({
@@ -51,8 +51,8 @@ export const ActiveLine = ({
     submitLine(text);
   });
 
-  useKeyInputs('Tab', () => {
-    const completedLine = autocomplete(text);
+  useKeyInputs('Tab', async () => {
+    const completedLine = await autocomplete(text);
     setText(completedLine);
     setIndex(completedLine.length);
   });
