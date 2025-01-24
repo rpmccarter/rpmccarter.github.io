@@ -34,6 +34,6 @@ export const fsDB = openDB<FsDBSchema>('fs', 1, {
     db.createObjectStore('inodes', { autoIncrement: true });
     db.createObjectStore('blobs', { autoIncrement: true });
 
-    initFs(tx);
+    void initFs(tx);
   },
 });
