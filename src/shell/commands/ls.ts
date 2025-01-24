@@ -1,10 +1,8 @@
 import { fsDB } from '@/db/fs';
-import { Autocompleter, Executor } from '../executeCommand';
+import { Executor } from '../executeCommand';
 import { partitionArgs } from '../utils/partitionArgs';
 import { readDirectory } from '@/systemCalls/readDirectory';
 import { SysError } from '@/systemCalls/utils/SysError';
-import { Trie } from '@/dataStructures/Trie';
-import { stat } from '@/systemCalls/stat';
 import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {

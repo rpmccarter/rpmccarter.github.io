@@ -5,7 +5,7 @@ import { Autocompleter } from '../executeCommand';
 import { stat } from '@/systemCalls/stat';
 
 export const fileAutocompleter: Autocompleter = async (_argv, prefix) => {
-  let lastSlashIndex = prefix.lastIndexOf('/');
+  const lastSlashIndex = prefix.lastIndexOf('/');
   const partialPathSegment = prefix.slice(lastSlashIndex + 1);
   const parentDirPath = prefix.slice(0, lastSlashIndex + 1);
 
