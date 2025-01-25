@@ -2,11 +2,11 @@ import { useCallback, useEffect } from 'react';
 
 type Modifier = 'metaKey' | 'ctrlKey' | 'altKey';
 
-export const useKeyboardShortcut = (
+export function useKeyboardShortcut(
   key: string,
   modifier: Modifier | Modifier[],
   callback?: (() => void) | (() => Promise<void>)
-) => {
+) {
   const onKeypress = useCallback(
     (event: KeyboardEvent) => {
       const modifierPressed =
@@ -26,4 +26,4 @@ export const useKeyboardShortcut = (
     addEventListener('keydown', onKeypress);
     return () => removeEventListener('keydown', onKeypress);
   }, [onKeypress]);
-};
+}

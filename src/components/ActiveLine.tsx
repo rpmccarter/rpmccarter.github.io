@@ -10,11 +10,11 @@ type ActiveLineProps = {
   autocomplete: (line: string) => Promise<string>;
 };
 
-export const ActiveLine = ({
+export function ActiveLine({
   submitLine,
   prompt,
   autocomplete,
-}: ActiveLineProps) => {
+}: ActiveLineProps) {
   const [text, setText] = useState('');
   const [index, setIndex] = useState(0);
   const [buffer, setBuffer] = useState('');
@@ -84,4 +84,4 @@ export const ActiveLine = ({
       {postText}
     </div>
   );
-};
+}
