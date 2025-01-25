@@ -2,7 +2,7 @@ type AutocompleteOptionsProps = {
   options: string[];
 };
 
-export const AutocompleteOptions = ({ options }: AutocompleteOptionsProps) => {
+export function AutocompleteOptions({ options }: AutocompleteOptionsProps) {
   return (
     <>
       {options.map((option, i) => (
@@ -12,4 +12,4 @@ export const AutocompleteOptions = ({ options }: AutocompleteOptionsProps) => {
       ))}
     </>
   );
-};
+}
