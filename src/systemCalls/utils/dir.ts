@@ -19,8 +19,8 @@ export async function deserializeDirectoryContent(
 export function serializeDirectoryContent(
   directoryEntries: Map<string, number>
 ): Blob {
-  const directoryContentString = Array.from(
-    directoryEntries.entries().map((pair) => pair.join('\t'))
-  ).join('\n');
+  const directoryContentString = Array.from(directoryEntries.entries())
+    .map((pair) => pair.join('\t'))
+    .join('\n');
   return new Blob([directoryContentString]);
 }
