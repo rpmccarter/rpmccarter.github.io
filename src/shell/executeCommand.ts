@@ -8,6 +8,7 @@ import { cd } from './commands/cd';
 import { rmdir } from './commands/rmdir';
 import { cat } from './commands/cat';
 import { touch } from './commands/touch';
+import { open } from './commands/open';
 
 export type Executor = (
   argv: string[],
@@ -33,6 +34,7 @@ const cmdNameToCmd = new Map<string, Command>(
     cd,
     cat,
     touch,
+    open,
   })
 );
 
