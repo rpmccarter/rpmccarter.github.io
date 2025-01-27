@@ -1,5 +1,6 @@
 import { FsDBUpgradeTX } from '@/db/fs';
 import {
+  OLD_WORKING_DIR_KEY,
   ROOT_DIR_INODE_ID_KEY,
   WORKING_DIR_INODE_ID_KEY,
   WORKING_DIR_KEY,
@@ -47,4 +48,5 @@ export default async function initFs(tx: FsDBUpgradeTX) {
   localStorage.setItem(ROOT_DIR_INODE_ID_KEY, rootInodeId.toString());
   localStorage.setItem(WORKING_DIR_INODE_ID_KEY, rootInodeId.toString());
   localStorage.setItem(WORKING_DIR_KEY, '/');
+  localStorage.setItem(OLD_WORKING_DIR_KEY, '/');
 }
