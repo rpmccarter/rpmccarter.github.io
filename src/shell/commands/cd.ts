@@ -4,6 +4,11 @@ import { changeDirectory } from '@/systemCalls/changeDirectory';
 import { fileAutocompleter } from '../utils/fileAutocompleter';
 
 const executor: Executor = async (argv, log) => {
+  if (argv.length > 2) {
+    log('cd: too many arguments');
+    return 1;
+  }
+
   const [firstArg] = argv;
 
   try {
@@ -12,8 +17,10 @@ const executor: Executor = async (argv, log) => {
     if (e instanceof SysError) {
       if (e.code === 'ENOENT') {
         log(`cd: no such file or directory: ${firstArg}`);
+        return 1;
       } else if (e.code === 'ENOTDIR') {
         log(`cd: not a directory: ${firstArg}`);
+        return 1;
       }
     } else {
       throw e;
