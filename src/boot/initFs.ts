@@ -87,6 +87,26 @@ URL=${link}
 
 const initialFileMap: SimpleFileMap = new Map<string, Blob | SimpleFileMap>([
   [
+    'README.md',
+    new Blob([
+      `# rmsh (Ronan McCarter Shell)
+
+rmsh is a browser-based shell, which attempts to emulate the bash shell and some common bash commands.
+
+I started this project because I wanted to build something cool and interactive for my personal website,
+and since I've always loved the experience of navigating and exploring via the shell, I figured I'd give
+others the opportunity to do the same.
+
+The file system is backed by IndexedDB, and implements a lite version of Linux inodes.
+
+The behavior of all commands is intended to replicate their behavior on My Machine (darwin 24.1.0).
+Only a few commands have been implemented, and many of those lack some functionality or other.
+
+The code for this project can be found at https://github.com/rpmccarter/rpmccarter.github.io
+`,
+    ]),
+  ],
+  [
     'links',
     new Map([
       ['linkedin.url', createUrlFile('https://linkedin.com/in/rpmccarter')],
@@ -100,6 +120,10 @@ const initialFileMap: SimpleFileMap = new Map<string, Blob | SimpleFileMap>([
         createUrlFile(
           'https://drive.google.com/file/d/1GTAgIQ32n6Cb3OlDoY1keHmf3O-AMpSu/view?usp=drive_link'
         ),
+      ],
+      [
+        'repo.url',
+        createUrlFile('https://github.com/rpmccarter/rpmccarter.github.io'),
       ],
     ]),
   ],
