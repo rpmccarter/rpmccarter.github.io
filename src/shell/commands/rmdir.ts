@@ -9,45 +9,45 @@ import { fileAutocompleter } from '../utils/fileAutocompleter';
 const executor: Executor = async (argv, log) => {
   const { positionals } = partitionArgs(argv);
 
-  const [firstDirArg] = positionals;
-  if (firstDirArg === undefined) {
+  if (positionals.length === 0) {
     log('rmdir: must supply directory name');
     return 64;
   }
 
-  let normalizedDirArg = myPath.normalize(firstDirArg);
-  if (normalizedDirArg === '/') {
-    log('rmdir: /: cannot remove root directory');
-    return 1;
-  }
+  let hasError = false;
+  for (const path of positionals) {
+    let normalizedDirArg = myPath.normalize(path);
+    if (normalizedDirArg === '/') {
+      log('rmdir: /: cannot remove root directory');
+      return 1;
+    }
 
-  normalizedDirArg = normalizedDirArg.replace(/\/$/, ''); // remove trailing slash if present
+    normalizedDirArg = normalizedDirArg.replace(/\/$/, ''); // remove trailing slash if present
 
-  if (normalizedDirArg === '.') {
-    log('rmdir: .: invalid argument');
-    return 1;
-  }
+    if (normalizedDirArg === '.') {
+      log('rmdir: .: invalid argument');
+      return 1;
+    }
 
-  try {
-    await deleteDirectory(await fsDB, firstDirArg);
-  } catch (e) {
-    if (e instanceof SysError) {
-      if (e.code === 'ENOENT') {
-        log(`rmdir: ${firstDirArg}: no such file or directory`);
-        return 1;
-      } else if (e.code === 'ENOTEMPTY') {
-        log(`rmdir: ${firstDirArg}: directory not empty`);
-        return 1;
-      } else if (e.code === 'ENOTDIR') {
-        log(`rmdir: ${firstDirArg}: not a directory`);
-        return 1;
+    try {
+      await deleteDirectory(await fsDB, path);
+    } catch (e) {
+      hasError = true;
+      if (e instanceof SysError) {
+        if (e.code === 'ENOENT') {
+          log(`rmdir: ${path}: no such file or directory`);
+        } else if (e.code === 'ENOTEMPTY') {
+          log(`rmdir: ${path}: directory not empty`);
+        } else if (e.code === 'ENOTDIR') {
+          log(`rmdir: ${path}: not a directory`);
+        }
+      } else {
+        throw e;
       }
-    } else {
-      throw e;
     }
   }
 
-  return 0;
+  return hasError ? 1 : 0;
 };
 
 export const rmdir = { executor, autocompleter: fileAutocompleter(true) };

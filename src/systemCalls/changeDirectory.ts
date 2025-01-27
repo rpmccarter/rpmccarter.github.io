@@ -1,5 +1,6 @@
 import { myPath } from '@/modules/myPath';
 import {
+  OLD_WORKING_DIR_KEY,
   ROOT_DIR_INODE_ID_KEY,
   WORKING_DIR_INODE_ID_KEY,
   WORKING_DIR_KEY,
@@ -9,6 +10,8 @@ import { resolveInodeId } from './utils/resolveInodeId';
 import { SysError } from './utils/SysError';
 
 export async function changeDirectory(path: string | undefined) {
+  const pwd = localStorage.getItem(WORKING_DIR_KEY);
+
   if (path === undefined) {
     const rootInodeId = localStorage.getItem(ROOT_DIR_INODE_ID_KEY);
     if (rootInodeId === null) {
@@ -16,6 +19,9 @@ export async function changeDirectory(path: string | undefined) {
     }
     localStorage.setItem(WORKING_DIR_INODE_ID_KEY, rootInodeId);
     localStorage.setItem(WORKING_DIR_KEY, '/');
+    if (pwd) {
+      localStorage.setItem(OLD_WORKING_DIR_KEY, pwd);
+    }
   } else {
     const inodeId = await resolveInodeId(await fsDB, path);
 
@@ -33,19 +39,19 @@ export async function changeDirectory(path: string | undefined) {
 
     const normalizedPath = myPath.normalize(path);
 
-    const basePathStr = localStorage.getItem(WORKING_DIR_KEY);
-    if (basePathStr === null) {
+    if (pwd === null) {
       throw new SysError('EGREGIOUS', 'missing directory information');
     }
 
     let newPath = myPath.isAbsolute(normalizedPath)
       ? normalizedPath
-      : myPath.normalize(basePathStr + '/' + normalizedPath);
+      : myPath.normalize(pwd + '/' + normalizedPath);
     if (newPath !== '/' && newPath.endsWith('/')) {
       newPath = newPath.slice(0, -1);
     }
 
     localStorage.setItem(WORKING_DIR_INODE_ID_KEY, inodeId.toString());
     localStorage.setItem(WORKING_DIR_KEY, newPath);
+    localStorage.setItem(OLD_WORKING_DIR_KEY, pwd);
   }
 }

@@ -8,24 +8,23 @@ import { SysError } from '@/systemCalls/utils/SysError';
 const executor: Executor = async (argv, log) => {
   const { positionals } = partitionArgs(argv);
 
-  const [firstArg] = positionals;
-
-  if (firstArg === undefined) {
+  if (positionals.length === 0) {
     log('touch: must supply file name');
     return 1;
   }
 
-  try {
-    await stat(await fsDB, firstArg);
-    return 0;
-  } catch (e) {
-    console.log(e);
-    if (!(e instanceof SysError && e.code === 'ENOENT')) {
-      throw e;
+  for (const path of positionals) {
+    try {
+      await stat(await fsDB, path);
+      return 0;
+    } catch (e) {
+      if (!(e instanceof SysError && e.code === 'ENOENT')) {
+        throw e;
+      }
     }
-  }
 
-  await createFile(await fsDB, firstArg, new Blob());
+    await createFile(await fsDB, path, new Blob());
+  }
 
   return 0;
 };
