@@ -22,11 +22,16 @@ export function Terminal() {
   useEffect(() => {
     setTimeout(() => {
       writeLine('rmsh v0.0.1');
-    }, 300);
+    }, 500);
     setTimeout(() => {
       writeLine('a wip project');
+    }, 1000);
+    setTimeout(() => {
+      writeLine(
+        'to skip to the resume, type "open links/resume.url" and hit Enter'
+      );
       setActive(false);
-    }, 600);
+    }, 1500);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
