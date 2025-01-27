@@ -9,17 +9,17 @@ const executor: Executor = async (argv, log) => {
     return 1;
   }
 
-  const [firstArg] = argv;
+  const [destination] = argv;
 
   try {
-    await changeDirectory(firstArg);
+    await changeDirectory(destination);
   } catch (e) {
     if (e instanceof SysError) {
       if (e.code === 'ENOENT') {
-        log(`cd: no such file or directory: ${firstArg}`);
+        log(`cd: no such file or directory: ${destination}`);
         return 1;
       } else if (e.code === 'ENOTDIR') {
-        log(`cd: not a directory: ${firstArg}`);
+        log(`cd: not a directory: ${destination}`);
         return 1;
       }
     } else {
