@@ -5,6 +5,7 @@ import {
   WORKING_DIR_INODE_ID_KEY,
   WORKING_DIR_KEY,
 } from '@/shell/constants';
+import { serializeDirectoryContent } from '@/systemCalls/utils/dir';
 
 export default async function initFs(tx: FsDBUpgradeTX) {
   const inodes = tx.objectStore('inodes');
@@ -58,13 +59,9 @@ export default async function initFs(tx: FsDBUpgradeTX) {
       }
     }
 
-    const directoryContentString = directoryEntries
-      .entries()
-      .toArray()
-      .map((pair) => pair.join('\t'))
-      .join('\n');
+    const directoryContentBlob = serializeDirectoryContent(directoryEntries);
 
-    return await blobs.put(new Blob([directoryContentString]), directoryBlobId);
+    return await blobs.put(directoryContentBlob, directoryBlobId);
   }
 
   const rootInodeId = await createDirectoryFromMap(initialFileMap, undefined);

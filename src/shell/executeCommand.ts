@@ -38,7 +38,7 @@ const cmdNameToCmd = new Map<string, Command>(
   })
 );
 
-const cmdTrie = new Trie(cmdNameToCmd.keys().toArray());
+const cmdTrie = new Trie(Array.from(cmdNameToCmd.keys()));
 
 export const executeCommand = async (
   cmd: string,

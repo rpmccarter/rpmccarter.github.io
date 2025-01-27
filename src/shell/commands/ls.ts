@@ -67,10 +67,11 @@ async function getEntries(
 ): Promise<GetEntriesResult> {
   try {
     const { directoryContents } = await readDirectory(await fsDB, path);
-    const entries = directoryContents
-      .keys()
-      .filter((entry) => showHidden || !entry.startsWith('.'))
-      .toArray();
+    const entries = Array.from(
+      directoryContents
+        .keys()
+        .filter((entry) => showHidden || !entry.startsWith('.'))
+    );
 
     return { status: 'success', path, entries };
   } catch (reason) {
