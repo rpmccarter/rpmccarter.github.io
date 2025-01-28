@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Cursor } from './Cursor';
 import { useCharInputs } from '@/hooks/useCharInputs';
 import { useKeyInputs } from '@/hooks/useKeyInput';
@@ -63,13 +63,15 @@ export function ActiveLine({
     setIndex((prev) => prev + buffer.length);
   });
 
-  useKeyboardShortcut('v', ['metaKey', 'ctrlKey'], async () => {
+  const pasteFromClipboard = useCallback(async () => {
     try {
       const copiedText = await navigator.clipboard.readText();
       setText(text.slice(0, index) + copiedText + text.slice(index));
       setIndex((prev) => prev + copiedText.length);
     } catch {}
-  });
+  }, [index, text]);
+  useKeyboardShortcut('v', 'metaKey', pasteFromClipboard);
+  useKeyboardShortcut('v', 'ctrlKey', pasteFromClipboard);
 
   useKeyInputs('Enter', () => {
     submitLine(text);
