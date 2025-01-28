@@ -1,22 +1,37 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActiveLine } from './ActiveLine';
 import { split } from 'shellwords-ts';
 import { executeCommand, autocompleteLine } from '@/shell/executeCommand';
 import { AutocompleteOptions } from './AutocompleteOptions';
 
 type ActiveCommandProps = {
+  numLines: number;
   writeLine: (command: string) => void;
   onExecutionStart: () => void;
   onExecutionEnd: () => void;
 };
 
 export default function ActiveCommand({
+  numLines,
   writeLine,
   onExecutionStart,
   onExecutionEnd,
 }: ActiveCommandProps) {
   const prompt = '> ';
   const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
+
+  const activeCommandRef = useRef<HTMLDivElement>(null);
+  const scrollIntoView = useCallback(() => {
+    activeCommandRef.current?.scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest',
+    });
+  }, []);
+
+  useEffect(() => {
+    scrollIntoView();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numLines, autocompleteOptions]);
 
   const submitLine = useCallback(
     async (line: string) => {
@@ -67,12 +82,13 @@ export default function ActiveCommand({
   // );
 
   return (
-    <>
+    <div ref={activeCommandRef}>
       {/* TODO: handle multiline strings */}
       {/* {lines.map((line, i) => (
         <InactiveLine key={i} text={line} />
       ))} */}
       <ActiveLine
+        onKeyPress={scrollIntoView}
         prompt={prompt}
         submitLine={(line) => {
           void submitLine(line);
@@ -82,7 +98,7 @@ export default function ActiveCommand({
       {autocompleteOptions.length > 0 && (
         <AutocompleteOptions options={autocompleteOptions} />
       )}
-    </>
+    </div>
   );
 }
 

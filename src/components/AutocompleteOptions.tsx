@@ -6,7 +6,7 @@ export function AutocompleteOptions({ options }: AutocompleteOptionsProps) {
   return (
     <>
       {options.map((option, i) => (
-        <div className="whitespace-pre break-all" key={i}>
+        <div className="whitespace-break-spaces break-all" key={i}>
           {option}
         </div>
       ))}
