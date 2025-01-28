@@ -94,7 +94,7 @@ export function ActiveLine({
   const postText = text.substring(index + 1);
 
   return (
-    <div className="whitespace-pre max-w-full text-wrap break-all">
+    <div className="whitespace-break-spaces max-w-full text-wrap break-all">
       {prompt}
       {preText}
       <Cursor char={char} key={index} />
