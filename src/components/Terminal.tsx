@@ -43,6 +43,7 @@ export function Terminal() {
       {!active && (
         <ActiveCommand
           key={lines.length}
+          numLines={lines.length}
           writeLine={writeLine}
           onExecutionStart={() => setActive(true)}
           onExecutionEnd={() => setActive(false)}

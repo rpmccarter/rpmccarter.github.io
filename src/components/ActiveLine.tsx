@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Cursor } from './Cursor';
 import { useCharInputs } from '@/hooks/useCharInputs';
 import { useKeyInputs } from '@/hooks/useKeyInput';
 import { useKeyboardShortcut } from '@/hooks/useKeyboardShortcut';
 
 type ActiveLineProps = {
+  onKeyPress: () => void;
   submitLine: (line: string) => void;
   prompt: string;
   autocomplete: (line: string) => Promise<string>;
 };
 
 export function ActiveLine({
+  onKeyPress,
   submitLine,
   prompt,
   autocomplete,
@@ -18,6 +20,11 @@ export function ActiveLine({
   const [text, setText] = useState('');
   const [index, setIndex] = useState(0);
   const [buffer, setBuffer] = useState('');
+
+  useEffect(() => {
+    onKeyPress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, index]);
 
   useCharInputs((char) => {
     setText((prev) => prev.substring(0, index) + char + prev.substring(index));
