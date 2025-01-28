@@ -34,6 +34,15 @@ export function ActiveLine({
     setIndex(0);
   });
 
+  useKeyboardShortcut('Backspace', 'altKey', () => {
+    const preText = text.slice(0, index).trimEnd();
+    const trimmedPreText = preText.substring(0, preText.lastIndexOf(' ') + 1);
+    const postText = text.slice(index);
+    const newString = trimmedPreText + postText;
+    setText(newString);
+    setIndex(trimmedPreText.length);
+  });
+
   // cut
   useKeyboardShortcut('u', 'ctrlKey', () => {
     setBuffer(text);
@@ -45,6 +54,14 @@ export function ActiveLine({
   useKeyboardShortcut('y', 'ctrlKey', () => {
     setText(text.slice(0, index) + buffer + text.slice(index));
     setIndex((prev) => prev + buffer.length);
+  });
+
+  useKeyboardShortcut('v', ['metaKey', 'ctrlKey'], async () => {
+    try {
+      const copiedText = await navigator.clipboard.readText();
+      setText(text.slice(0, index) + copiedText + text.slice(index));
+      setIndex((prev) => prev + copiedText.length);
+    } catch {}
   });
 
   useKeyInputs('Enter', () => {
